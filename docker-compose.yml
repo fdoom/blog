@@ -1,0 +1,17 @@
+services:
+  front:
+    build: ./front
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "5000:8080"
+    depends_on:
+      - api
+
+  api:
+    build: ./api
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "8080:8080"
+      
