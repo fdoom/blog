@@ -8,7 +8,11 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
     ALREADY_EXISTED_USERNAME(HttpStatus.CONFLICT, "The username already exists"),
-    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "The account does not exist");
+    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "The account does not exist"),
+
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.BAD_REQUEST, "The refresh token does not exist"),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "The refresh token is expired"),
+    INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "The refresh token is invalid"),;
     private final HttpStatus status;
     private final String message;
 }
