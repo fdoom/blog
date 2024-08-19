@@ -1,16 +1,20 @@
-package cyou.noteit.api.global.security.filter;
+package cyou.noteit.api.global.config.security.filter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cyou.noteit.api.domain.jwt.entity.RefreshToken;
-import cyou.noteit.api.domain.jwt.repository.RefreshTokenRepository;
-import cyou.noteit.api.global.security.jwt.JwtUtil;
+import cyou.noteit.api.global.exception.CustomException;
+import cyou.noteit.api.global.exception.ErrorCode;
+import cyou.noteit.api.global.exception.ErrorResponse;
+import cyou.noteit.api.global.redis.RedisUtil;
+import cyou.noteit.api.global.config.security.jwt.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,16 +24,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
+
 @RequiredArgsConstructor
+@Builder
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisUtil redisUtil;
+
+    private static final String ACCESS_TOKEN_NAME = "access";
+    private static final Long ACCESS_TOKEN_EXPIRATION_MS = 600000L;
+
+    private static final String REFRESH_TOKEN_NAME = "refresh";
+    private static final Long REFRESH_TOKEN_EXPIRATION_MS = 86400000L;
 
     // 로그인 필터
     @Override
@@ -38,7 +49,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         try {
             requestBody = objectMapper.readValue(request.getInputStream(), new TypeReference<>() {});
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CustomException(ErrorCode.LOGIN_REQUEST_BODY_NOT_FOUND);
         }
         String username = requestBody.get("username");
         String password = requestBody.get("password");
@@ -60,30 +71,26 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String access = jwtUtil.createJwt("access", username, role, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        String access = jwtUtil.createJwt(ACCESS_TOKEN_NAME, username, role, ACCESS_TOKEN_EXPIRATION_MS);
+        String refresh = jwtUtil.createJwt(REFRESH_TOKEN_NAME, username, role, REFRESH_TOKEN_EXPIRATION_MS);
 
-        addRefreshEntity(username, refresh, 86400000L);
+        addRefreshToken(username, refresh);
 
         response.setHeader("Authorization", "Bearer " + access);
-        response.addCookie(createCookie("refresh", refresh));
+        response.addCookie(createCookie(refresh));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    private void addRefreshEntity(String username, String refresh, Long expiredMs) {
-
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
-
-        RefreshToken refreshTokenEntity = RefreshToken.builder()
+    private void addRefreshToken(String username, String refresh) {
+        redisUtil.builder()
                 .username(username)
-                .token(refresh)
-                .expiration(date.toString())
+                .refreshToken(refresh)
+                .expirationMs(REFRESH_TOKEN_EXPIRATION_MS)
                 .build();
-        refreshTokenRepository.save(refreshTokenEntity);
     }
 
-    private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
+    private Cookie createCookie(String value) {
+        Cookie cookie = new Cookie(LoginFilter.REFRESH_TOKEN_NAME, value);
         cookie.setMaxAge(24*60*60);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
@@ -94,5 +101,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write(objectMapper.writeValueAsString(
+                ErrorResponse.builder()
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .message(failed.getMessage())
+                        .build()
+        ));
+
     }
 }

@@ -1,18 +1,20 @@
-package cyou.noteit.api.global.security.dto;
+package cyou.noteit.api.global.config.security.dto;
 
 import cyou.noteit.api.domain.account.entity.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private final Account account;
+
+    public Long getId() {
+        return account.getId();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

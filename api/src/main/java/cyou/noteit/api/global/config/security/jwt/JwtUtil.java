@@ -1,4 +1,4 @@
-package cyou.noteit.api.global.security.jwt;
+package cyou.noteit.api.global.config.security.jwt;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,16 +44,6 @@ public class JwtUtil {
                 .verifyWith(secretKey).build()
                 .parseSignedClaims(token).getPayload()
                 .get("category", String.class);
-    }
-
-    public String createToken(String username, String role, Long expiredTime) {
-        return Jwts.builder()
-                .claim("username", username)
-                .claim("role", role)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiredTime))
-                .signWith(secretKey)
-                .compact();
     }
 
     public String createJwt(String category, String username, String role, Long expiredMs) {

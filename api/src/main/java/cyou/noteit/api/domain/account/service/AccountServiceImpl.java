@@ -23,6 +23,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResponseEntity<JoinResponseDTO> joinAccount(JoinRequestDTO joinRequestDTO) {
+        Role role = accountRepository.countAllAccount() == 0 ? Role.ROLE_ADMIN : Role.ROLE_USER;
+
         if(accountRepository.existsByUsername(joinRequestDTO.getUsername()))
             throw new CustomException(ErrorCode.ALREADY_EXISTED_USERNAME);
 
@@ -30,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
                 Account.builder()
                         .username(joinRequestDTO.getUsername())
                         .password(passwordEncoder.encode(joinRequestDTO.getPassword()))
-                        .role(Role.ROLE_USER)
+                        .role(role)
                         .build()
         );
 

@@ -1,10 +1,9 @@
 package cyou.noteit.api.domain.jwt.service;
 
-import cyou.noteit.api.domain.jwt.entity.RefreshToken;
-import cyou.noteit.api.domain.jwt.repository.RefreshTokenRepository;
+import cyou.noteit.api.global.redis.RedisUtil;
 import cyou.noteit.api.global.exception.CustomException;
 import cyou.noteit.api.global.exception.ErrorCode;
-import cyou.noteit.api.global.security.jwt.JwtUtil;
+import cyou.noteit.api.global.config.security.jwt.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -23,7 +20,13 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ReissueServiceImpl implements ReissueService {
     private final JwtUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisUtil redisUtil;
+
+    private final static String ACCESS_TOKEN_NAME = "access";
+    private final static Long ACCESS_TOKEN_EXPIRATION_MS = 600000L;
+
+    private final static String REFRESH_TOKEN_NAME = "refresh";
+    private final static Long REFRESH_TOKEN_EXPIRATION_MS = 86400000L;
 
     @Override
     public ResponseEntity<Void> reissue(HttpServletRequest request, HttpServletResponse response) {
@@ -35,11 +38,9 @@ public class ReissueServiceImpl implements ReissueService {
         String username = jwtUtil.getUsername(refreshToken);
         String role = jwtUtil.getRole(refreshToken);
 
-        String newAccessToken = jwtUtil.createJwt("access", username, role, 600000L);
-        String newRefreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);
-
-        refreshTokenRepository.deleteByToken(refreshToken);
-        addRefreshEntity(username, newRefreshToken, 86400000L);
+        String newAccessToken = jwtUtil.createJwt(ACCESS_TOKEN_NAME, username, role, ACCESS_TOKEN_EXPIRATION_MS);
+        String newRefreshToken = jwtUtil.createJwt(REFRESH_TOKEN_NAME, username, role, REFRESH_TOKEN_EXPIRATION_MS);
+        addRefreshToken(username, newRefreshToken);
 
         setResponseHeaders(response, newAccessToken, newRefreshToken);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -48,7 +49,7 @@ public class ReissueServiceImpl implements ReissueService {
     private Optional<String> getRefreshTokenFromCookies(HttpServletRequest request) {
         return Stream.of(Optional.ofNullable(request.getCookies())
                         .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND)))
-                .filter(cookie -> "refresh".equals(cookie.getName()))
+                .filter(cookie -> REFRESH_TOKEN_NAME.equals(cookie.getName()))
                 .map(Cookie::getValue)
                 .findFirst();
     }
@@ -61,33 +62,34 @@ public class ReissueServiceImpl implements ReissueService {
         }
 
         String category = jwtUtil.getCategory(refreshToken);
-        if (!category.equals("refresh") || !refreshTokenRepository.existsByToken(refreshToken)) {
+        String username = jwtUtil.getUsername(refreshToken);
+        if (
+                !category.equals(REFRESH_TOKEN_NAME) ||
+                !redisUtil.existsRefreshToken(username) ||
+                !redisUtil.getRefreshToken(username).equals(refreshToken)
+        ) {
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
     }
 
     private void setResponseHeaders(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setHeader("Authorization", "Bearer " + accessToken);
-        response.addCookie(createCookie("refresh", refreshToken));
+        response.addCookie(createCookie(refreshToken));
     }
 
-    private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
+    private Cookie createCookie(String value) {
+        Cookie cookie = new Cookie(ReissueServiceImpl.REFRESH_TOKEN_NAME, value);
         cookie.setMaxAge(24 * 60 * 60);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         return cookie;
     }
 
-    private void addRefreshEntity(String username, String refreshToken, Long expirationMs) {
-        Date expirationDate = new Date(System.currentTimeMillis() + expirationMs);
-
-        RefreshToken refreshTokenEntity = RefreshToken.builder()
+    private void addRefreshToken(String username, String refreshToken) {
+        redisUtil.builder()
+                .refreshToken(refreshToken)
                 .username(username)
-                .token(refreshToken)
-                .expiration(expirationDate.toString())
+                .expirationMs(ReissueServiceImpl.REFRESH_TOKEN_EXPIRATION_MS)
                 .build();
-
-        refreshTokenRepository.save(refreshTokenEntity);
     }
 }

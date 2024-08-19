@@ -1,10 +1,9 @@
-package cyou.noteit.api.global.security.service;
+package cyou.noteit.api.global.config.security.service;
 
-import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.domain.account.repository.AccountRepository;
 import cyou.noteit.api.global.exception.CustomException;
 import cyou.noteit.api.global.exception.ErrorCode;
-import cyou.noteit.api.global.security.dto.CustomUserDetails;
+import cyou.noteit.api.global.config.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
