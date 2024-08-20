@@ -17,7 +17,8 @@ public enum ErrorCode {
 
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "The access token is expired"),
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "The access token is invalid"),
-    INVALID_ACCOUNT(HttpStatus.UNAUTHORIZED, "The account is invalid"),;
+    INVALID_ACCOUNT(HttpStatus.UNAUTHORIZED, "The account is invalid"),
+    INVALID_ACCOUNT_PASSWORD(HttpStatus.UNAUTHORIZED, "The account password is invalid"),;
     private final HttpStatus status;
     private final String message;
 }

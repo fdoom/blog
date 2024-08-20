@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -25,6 +24,7 @@ public class CustomLogoutFilter extends GenericFilter {
     private final RedisUtil redisUtil;
 
     private static final String LOGOUT_URI = "/logout";
+    private static final String LOGOUT_HTTP_METHOD = "POST";
     private static final String REFRESH_TOKEN_NAME = "refresh";
 
     @Override
@@ -55,7 +55,7 @@ public class CustomLogoutFilter extends GenericFilter {
     }
 
     private boolean isLogoutRequest(HttpServletRequest request) {
-        return LOGOUT_URI.equals(request.getRequestURI()) && "POST".equalsIgnoreCase(request.getMethod());
+        return LOGOUT_URI.equals(request.getRequestURI()) && LOGOUT_HTTP_METHOD.equalsIgnoreCase(request.getMethod());
     }
 
     private Optional<String> getRefreshTokenFromCookies(HttpServletRequest request) {

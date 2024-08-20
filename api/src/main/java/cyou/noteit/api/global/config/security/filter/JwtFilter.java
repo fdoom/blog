@@ -6,6 +6,7 @@ import cyou.noteit.api.global.config.security.service.CustomUserDetailsService;
 import cyou.noteit.api.global.exception.CustomException;
 import cyou.noteit.api.global.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,17 +28,21 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService customUserDetailsService;
 
+    private static final String ACCESS_TOKEN_HEADER_NAME = "Authorization";
+    private static final String ACCESS_TOKEN_BEARER_PREFIX = "Bearer ";
+    private static final String ACCESS_TOKEN_NAME = "access";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         // Authorization 헤더에서 Bearer 토큰 추출
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        String authHeader = request.getHeader(ACCESS_TOKEN_HEADER_NAME);
+        if (authHeader == null || !authHeader.startsWith(ACCESS_TOKEN_BEARER_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String accessToken = authHeader.substring("Bearer ".length());
+        String accessToken = authHeader.substring(ACCESS_TOKEN_BEARER_PREFIX.length());
 
         try {
             jwtUtil.isExpired(accessToken);
@@ -46,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String category = jwtUtil.getCategory(accessToken);
-        if (!category.equals("access")) {
+        if (!category.equals(ACCESS_TOKEN_NAME)) {
             throw new CustomException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
 

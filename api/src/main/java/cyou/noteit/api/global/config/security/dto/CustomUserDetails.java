@@ -1,6 +1,7 @@
 package cyou.noteit.api.global.config.security.dto;
 
 import cyou.noteit.api.domain.account.entity.Account;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Getter
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private final Account account;
-
-    public Long getId() {
-        return account.getId();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

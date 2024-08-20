@@ -20,7 +20,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> exception(Exception e) {
-        log.error("Exception caught: {}", e.getMessage(), e);
+        log.error("Exception caught: {} - {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorResponse.builder()

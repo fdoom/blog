@@ -36,6 +36,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper;
     private final RedisUtil redisUtil;
 
+    private static final String ACCESS_TOKEN_HEADER_NAME = "Authorization";
+    private static final String ACCESS_TOKEN_BEARER_PREFIX = "Bearer ";
+
     private static final String ACCESS_TOKEN_NAME = "access";
     private static final Long ACCESS_TOKEN_EXPIRATION_MS = 600000L;
 
@@ -51,8 +54,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         } catch (IOException e) {
             throw new CustomException(ErrorCode.LOGIN_REQUEST_BODY_NOT_FOUND);
         }
-        String username = requestBody.get("username");
-        String password = requestBody.get("password");
+        String username = requestBody.get(SPRING_SECURITY_FORM_USERNAME_KEY);
+        String password = requestBody.get(SPRING_SECURITY_FORM_PASSWORD_KEY);
 
         // 토큰 생성
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -76,7 +79,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         addRefreshToken(username, refresh);
 
-        response.setHeader("Authorization", "Bearer " + access);
+        response.setHeader(ACCESS_TOKEN_HEADER_NAME, ACCESS_TOKEN_BEARER_PREFIX + access);
         response.addCookie(createCookie(refresh));
         response.setStatus(HttpServletResponse.SC_OK);
     }

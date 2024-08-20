@@ -20,8 +20,4 @@ public class BaseEntity {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
-    protected void updatedInfo() {
-        updatedAt = LocalDateTime.now();
-    }
 }

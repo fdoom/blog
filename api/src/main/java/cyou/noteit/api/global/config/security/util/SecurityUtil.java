@@ -1,19 +1,19 @@
 package cyou.noteit.api.global.config.security.util;
 
+import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.global.config.security.dto.CustomUserDetails;
 import cyou.noteit.api.global.exception.CustomException;
 import cyou.noteit.api.global.exception.ErrorCode;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SecurityUtil {
-    public Long getAccountId () {
+    public Account getAccount () {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof CustomUserDetails userDetails) {
-            return userDetails.getId();
+            return userDetails.getAccount();
         } else {
             throw new CustomException(ErrorCode.INVALID_ACCOUNT);
         }

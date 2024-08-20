@@ -46,7 +46,7 @@ public class CustomErrorFilter extends GenericFilterBean {
     }
 
     private void handleGenericException(HttpServletResponse response, Exception e) throws IOException {
-        log.error("Filter Exception caught: {}", e.getMessage(), e);
+        log.error("Filter Exception caught: {} - {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         writeErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -54,6 +54,7 @@ public class CustomErrorFilter extends GenericFilterBean {
 
     private void writeErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {
         try (PrintWriter writer = response.getWriter()) {
+            response.setContentType("application/json");
             writer.write(objectMapper.writeValueAsString(
                     ErrorResponse.builder()
                             .status(status)
