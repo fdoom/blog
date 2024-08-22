@@ -4,11 +4,14 @@ import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.domain.post.entity.Post;
 import cyou.noteit.api.global.base.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(
         uniqueConstraints = {
@@ -33,10 +36,12 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parentCategoryId")
+    @JoinColumn(name = "parentCategoryId", nullable = false)
     private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Category> childCategories;
+
 }

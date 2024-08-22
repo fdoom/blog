@@ -15,10 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -27,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResponseEntity<JoinResponseDTO> joinAccount(JoinRequestDTO joinRequestDTO) {
-        Role role = accountRepository.countAllAccount() == 0 ? Role.ROLE_ADMIN : Role.ROLE_USER;
+        Role role = !accountRepository.existsAdminAccount() ? Role.ROLE_ADMIN : Role.ROLE_USER;
 
         if(accountRepository.existsByUsername(joinRequestDTO.getUsername()))
             throw new CustomException(ErrorCode.ALREADY_EXISTED_USERNAME);

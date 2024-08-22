@@ -12,7 +12,11 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByUsername(String username);
 
     @Query("""
-    SELECT COUNT(*) FROM Account
+    SELECT EXISTS(
+        SELECT 1
+        FROM Account a
+        WHERE a.role = 'ROLE_ADMIN'
+    )
     """)
-    Long countAllAccount();
+    Boolean existsAdminAccount();
 }

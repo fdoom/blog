@@ -25,6 +25,7 @@ public class Post {
     private String postContent;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ShareStatus shareStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
