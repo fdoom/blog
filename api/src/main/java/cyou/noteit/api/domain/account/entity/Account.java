@@ -36,9 +36,11 @@ public class Account extends BaseEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categorys = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
