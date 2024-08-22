@@ -27,18 +27,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ResponseEntity<CategoryResponseDTO> createCategory(CategoryRequestDTO categoryRequestDTO) {
-        Account account = securityUtil.getAccount();
-        if(categoryRepository.existsByAccountAndCategoryName(account, categoryRequestDTO.getCategoryName()))
+        if(categoryRepository.existsByCategoryName(categoryRequestDTO.getCategoryName()))
             throw new CustomException(ErrorCode.ALREADY_EXISTED_CATEGORY);
 
         Category category = Category.builder()
-                .account(account)
                 .categoryName(categoryRequestDTO.getCategoryName())
                 .build();
 
         if(categoryRequestDTO.getParentCategoryId() != null) {
             Category parentCategory = categoryRepository.findById(categoryRequestDTO.getParentCategoryId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+                    .orElseThrow(() -> new CustomException(ErrorCode.PARENT_CATEGORY_NOT_FOUND));
 
             category.setParentCategory(parentCategory);
         }
@@ -53,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseEntity<List<CategoryResponseDTO>> getCategoryInfoList() {
         return ResponseEntity.ok(
-                categoryRepository.findByAccountAndParentCategoryIsNull(securityUtil.getAccount())
+                categoryRepository.findByParentCategoryIsNull()
                         .stream()
                         .map(this::mapCategoryToDTO)
                         .toList()
@@ -74,18 +72,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ResponseEntity<CategoryResponseDTO> updateCategoryInfo(Long categoryId, CategoryRequestDTO categoryRequestDTO) {
-        Account account = securityUtil.getAccount();
-        Category category = categoryRepository.findByAccountAndCategoryId(account, categoryId)
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
-        if(categoryRepository.existsByAccountAndCategoryNameAndCategoryIdNot(account, categoryRequestDTO.getCategoryName(), categoryId))
+        if(categoryRepository.existsByCategoryNameAndCategoryIdNot(categoryRequestDTO.getCategoryName(), categoryId))
             throw new CustomException(ErrorCode.ALREADY_EXISTED_CATEGORY);
 
-        Category parentCategory = categoryRepository.findByAccountAndCategoryId(account, categoryRequestDTO.getParentCategoryId())
-                .orElseThrow(() -> new CustomException(ErrorCode.PARENT_CATEGORY_NOT_FOUND));
-
         modelMapper.map(categoryRequestDTO, category);
-        category.setParentCategory(parentCategory);
+
+        if(categoryRequestDTO.getParentCategoryId() != null) {
+            Category parentCategory = categoryRepository.findById(categoryRequestDTO.getParentCategoryId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.PARENT_CATEGORY_NOT_FOUND));
+            category.setParentCategory(parentCategory);
+        }
+
         categoryRepository.save(category);
 
         return ResponseEntity.ok(
@@ -95,9 +95,19 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ResponseEntity<Void> deleteCategoryInfo(Long categoryId) {
-        Category category = categoryRepository.findByAccountAndCategoryId(securityUtil.getAccount(), categoryId)
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
         categoryRepository.delete(category);
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryResponseDTO>> searchCategoryName(String categoryName) {
+        return ResponseEntity.ok(
+                categoryRepository.findByCategoryName(categoryName)
+                        .stream()
+                        .map(this::mapCategoryToDTO)
+                        .toList()
+        );
     }
 }

@@ -3,6 +3,7 @@ package cyou.noteit.api.domain.account.entity;
 import cyou.noteit.api.domain.account.entity.role.Role;
 import cyou.noteit.api.domain.category.entity.Category;
 import cyou.noteit.api.domain.comment.entity.Comment;
+import cyou.noteit.api.domain.post.entity.Post;
 import cyou.noteit.api.global.base.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,11 +39,11 @@ public class Account extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Category> categorys = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     public void alterPassword(String newPassword) {
         this.password = newPassword;

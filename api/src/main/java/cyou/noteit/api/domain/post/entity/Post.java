@@ -1,5 +1,6 @@
 package cyou.noteit.api.domain.post.entity;
 
+import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.domain.category.entity.Category;
 import cyou.noteit.api.domain.comment.entity.Comment;
 import cyou.noteit.api.domain.post.entity.status.ShareStatus;
@@ -29,7 +30,11 @@ public class Post {
     private ShareStatus shareStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "accountId", nullable = false)
+    private Account account;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

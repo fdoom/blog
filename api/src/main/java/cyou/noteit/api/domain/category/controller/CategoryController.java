@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/cateogry")
+@RequestMapping("/category")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -34,5 +34,10 @@ public class CategoryController {
     @DeleteMapping("/info/{categoryId}")
     public ResponseEntity<Void> deleteCategoryInfo(@PathVariable Long categoryId) {
         return categoryService.deleteCategoryInfo(categoryId);
+    }
+
+    @GetMapping("/search/{categoryName}")
+    public ResponseEntity<List<CategoryResponseDTO>> searchCategory(@PathVariable String categoryName) {
+        return categoryService.searchCategoryName(categoryName);
     }
 }

@@ -15,4 +15,6 @@ public interface CategoryService {
     ResponseEntity<CategoryResponseDTO> updateCategoryInfo(Long categoryId, CategoryRequestDTO categoryRequestDTO);
 
     ResponseEntity<Void> deleteCategoryInfo(Long categoryId);
+
+    ResponseEntity<List<CategoryResponseDTO>> searchCategoryName(String categoryName);
 }
