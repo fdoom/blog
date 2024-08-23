@@ -12,7 +12,7 @@ import java.util.List;
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long commentId;
+    private Long commentId;
     private String commentContent;
 
     @ManyToOne(fetch = FetchType.LAZY)

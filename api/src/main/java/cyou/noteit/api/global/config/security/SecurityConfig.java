@@ -84,7 +84,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/category/info", "/category/search/**").permitAll()
                         .requestMatchers("/category/**").hasAuthority("ROLE_ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "/post/info/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/post/info/**", "/post/search/**").permitAll()
                         .requestMatchers("/post/**").hasAuthority("ROLE_ADMIN")
 
                         .anyRequest().authenticated()

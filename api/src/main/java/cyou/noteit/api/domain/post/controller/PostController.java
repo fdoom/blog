@@ -44,4 +44,9 @@ public class PostController {
     public ResponseEntity<PostResponseDTO> deletePostInfo(@PathVariable Long postId) {
         return postService.deletePostInfo(postId);
     }
+
+    @GetMapping("/search/{postTitle}")
+    public ResponseEntity<List<PostResponseDTO>> searchPostInfoByPostTitle(@PathVariable String postTitle) {
+        return postService.searchPostInfoByPostTitle(postTitle);
+    }
 }

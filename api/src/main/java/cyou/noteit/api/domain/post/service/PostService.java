@@ -18,4 +18,6 @@ public interface PostService {
     ResponseEntity<List<PostResponseDTO>> getAllPostInfoByCategoryId(Long categoryId);
 
     ResponseEntity<PostResponseDTO> deletePostInfo(Long postId);
+
+    ResponseEntity<List<PostResponseDTO>> searchPostInfoByPostTitle(String postTitle);
 }

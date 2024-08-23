@@ -1,11 +1,10 @@
 package cyou.noteit.api.domain.post.repository;
 
 import cyou.noteit.api.domain.account.entity.Account;
-import cyou.noteit.api.domain.account.entity.role.Role;
-import cyou.noteit.api.domain.category.entity.Category;
 import cyou.noteit.api.domain.post.entity.Post;
-import cyou.noteit.api.domain.post.entity.status.ShareStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +12,60 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByPostIdAndAccount(Long postId, Account account);
 
-    Optional<Post> findByPostIdAndShareStatus(Long postId, ShareStatus shareStatus);
+    @Query(value = """
+    SELECT *
+    FROM post
+    WHERE post_id = :postId
+    AND (
+        CASE 
+            WHEN :shareStatus = 'PRIVATE' THEN share_status IN ('PRIVATE', 'PROTECTED', 'PUBLIC')
+            WHEN :shareStatus = 'PROTECTED' THEN share_status IN ('PROTECTED', 'PUBLIC')
+            ELSE share_status = 'PUBLIC'
+        END
+    )
+    """, nativeQuery = true)
+    Optional<Post> findByPostIdAndShareStatus(@Param("postId") Long postId, @Param("shareStatus") String shareStatus);
 
-    List<Post> findAllByShareStatus(ShareStatus shareStatus);
+    @Query(value = """
+    SELECT *
+    FROM post
+    WHERE 
+    (
+        CASE 
+            WHEN :shareStatus = 'PRIVATE' THEN share_status IN ('PRIVATE', 'PROTECTED', 'PUBLIC')
+            WHEN :shareStatus = 'PROTECTED' THEN share_status IN ('PROTECTED', 'PUBLIC')
+            ELSE share_status = 'PUBLIC'
+        END
+    )
+    """, nativeQuery = true)
+    List<Post> findAllByShareStatus(@Param("shareStatus") String shareStatus);
 
-    List<Post> findAllByShareStatusAndCategory(ShareStatus shareStatus, Category category);
+    @Query(value = """
+    SELECT *
+    FROM post
+    WHERE post.category_id = :categoryId
+    AND (
+        CASE 
+            WHEN :shareStatus = 'PRIVATE' THEN share_status IN ('PRIVATE', 'PROTECTED', 'PUBLIC')
+            WHEN :shareStatus = 'PROTECTED' THEN share_status IN ('PROTECTED', 'PUBLIC')
+            ELSE share_status = 'PUBLIC'
+        END
+    )
+    """, nativeQuery = true)
+    List<Post> findAllByShareStatusAndCategory(@Param("shareStatus") String shareStatus, @Param("categoryId") Long categoryId);
+
+    @Query(value = """
+    SELECT *
+    FROM post
+    WHERE MATCH(post_title)
+    AGAINST(:postTitle IN NATURAL LANGUAGE MODE)
+    AND (
+        CASE 
+            WHEN :shareStatus = 'PRIVATE' THEN share_status IN ('PRIVATE', 'PROTECTED', 'PUBLIC')
+            WHEN :shareStatus = 'PROTECTED' THEN share_status IN ('PROTECTED', 'PUBLIC')
+            ELSE share_status = 'PUBLIC'
+        END
+    )
+    """, nativeQuery = true)
+    List<Post> findAllByPostTitle(@Param("postTitle") String postTitle, @Param("shareStatus") String shareStatus);
 }

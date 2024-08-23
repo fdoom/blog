@@ -89,7 +89,7 @@ public class PostServiceImpl implements PostService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
         return ResponseEntity.ok(
-                postRepository.findAllByShareStatusAndCategory(roleToShareStatus(), category)
+                postRepository.findAllByShareStatusAndCategory(roleToShareStatus(), category.getCategoryId())
                         .stream()
                         .map(post -> modelMapper.map(post, PostResponseDTO.class))
                         .toList()
@@ -104,11 +104,21 @@ public class PostServiceImpl implements PostService {
         return ResponseEntity.ok().build();
     }
 
-    private ShareStatus roleToShareStatus() {
+    @Override
+    public ResponseEntity<List<PostResponseDTO>> searchPostInfoByPostTitle(String postTitle) {
+        return ResponseEntity.ok(
+                postRepository.findAllByPostTitle(postTitle, roleToShareStatus())
+                        .stream()
+                        .map(post -> modelMapper.map(post, PostResponseDTO.class))
+                        .toList()
+        );
+    }
+
+    private String roleToShareStatus() {
         return switch(securityUtil.getRole()) {
-            case ROLE_VISITOR -> ShareStatus.PUBLIC;
-            case ROLE_USER -> ShareStatus.PROTECTED;
-            case Role.ROLE_ADMIN -> ShareStatus.PRIVATE;
+            case ROLE_VISITOR -> ShareStatus.PUBLIC.name();
+            case ROLE_USER -> ShareStatus.PROTECTED.name();
+            case Role.ROLE_ADMIN -> ShareStatus.PRIVATE.name();
         };
     }
 }
