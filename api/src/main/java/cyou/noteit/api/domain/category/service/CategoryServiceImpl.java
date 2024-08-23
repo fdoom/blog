@@ -30,9 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(categoryRepository.existsByCategoryName(categoryRequestDTO.getCategoryName()))
             throw new CustomException(ErrorCode.ALREADY_EXISTED_CATEGORY);
 
-        Category category = Category.builder()
-                .categoryName(categoryRequestDTO.getCategoryName())
-                .build();
+        Category category = modelMapper.map(categoryRequestDTO, Category.class);
 
         if(categoryRequestDTO.getParentCategoryId() != null) {
             Category parentCategory = categoryRepository.findById(categoryRequestDTO.getParentCategoryId())

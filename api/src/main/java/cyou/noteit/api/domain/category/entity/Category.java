@@ -1,6 +1,5 @@
 package cyou.noteit.api.domain.category.entity;
 
-import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.domain.post.entity.Post;
 import cyou.noteit.api.global.base.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -9,9 +8,6 @@ import lombok.*;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(
         uniqueConstraints = {

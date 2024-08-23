@@ -4,17 +4,21 @@ import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.domain.category.entity.Category;
 import cyou.noteit.api.domain.comment.entity.Comment;
 import cyou.noteit.api.domain.post.entity.status.ShareStatus;
+import cyou.noteit.api.global.base.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
 @Entity
 @Table(
         indexes = {
                 @Index(name = "index_post_name", columnList = "postTitle")
         }
 )
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
@@ -29,10 +33,12 @@ public class Post {
     @Column(nullable = false)
     private ShareStatus shareStatus;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId", nullable = false)
     private Account account;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;

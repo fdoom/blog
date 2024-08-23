@@ -1,6 +1,7 @@
 package cyou.noteit.api.global.config.security.util;
 
 import cyou.noteit.api.domain.account.entity.Account;
+import cyou.noteit.api.domain.account.entity.role.Role;
 import cyou.noteit.api.global.config.security.dto.CustomUserDetails;
 import cyou.noteit.api.global.exception.CustomException;
 import cyou.noteit.api.global.exception.ErrorCode;
@@ -25,7 +26,11 @@ public class SecurityUtil {
         if (principal instanceof CustomUserDetails userDetails) {
             return userDetails.getAuthorities().iterator().next().getAuthority();
         } else {
-            throw new CustomException(ErrorCode.INVALID_ACCOUNT);
+            return Role.ROLE_VISITOR.name();
         }
+    }
+
+    public Role getRole () {
+        return Role.valueOf(getAuthority());
     }
 }
