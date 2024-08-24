@@ -87,6 +87,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/post/info/**", "/post/search/**").permitAll()
                         .requestMatchers("/post/**").hasAuthority("ROLE_ADMIN")
 
+                        .requestMatchers(HttpMethod.GET, "/comment/info/**").permitAll()
                         .anyRequest().authenticated()
                 )
 

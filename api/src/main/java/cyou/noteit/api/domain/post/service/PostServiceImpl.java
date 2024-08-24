@@ -118,7 +118,7 @@ public class PostServiceImpl implements PostService {
         return switch(securityUtil.getRole()) {
             case ROLE_VISITOR -> ShareStatus.PUBLIC.name();
             case ROLE_USER -> ShareStatus.PROTECTED.name();
-            case Role.ROLE_ADMIN -> ShareStatus.PRIVATE.name();
+            case ROLE_ADMIN -> ShareStatus.PRIVATE.name();
         };
     }
 }

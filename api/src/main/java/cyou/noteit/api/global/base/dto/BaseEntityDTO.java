@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class BaseEntityDTO {
+public abstract class BaseEntityDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

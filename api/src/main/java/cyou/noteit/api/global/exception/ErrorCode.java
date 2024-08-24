@@ -24,7 +24,10 @@ public enum ErrorCode {
     ALREADY_EXISTED_CATEGORY(HttpStatus.CONFLICT, "The category already exists"),
     PARENT_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "The parent category does not exist"),
 
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "The post does not exist"),;
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "The post does not exist"),
+
+    PARENT_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "The parent comment does not exist"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "The comment does not exist"),;
     private final HttpStatus status;
     private final String message;
 }
