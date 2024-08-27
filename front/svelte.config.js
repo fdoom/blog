@@ -7,6 +7,9 @@ const config = {
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter()
+	},
+	prerender: {
+		enabled: false // CSR을 원한다면 false로 설정
 	}
 };
 
