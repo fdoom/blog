@@ -1,7 +1,6 @@
 package cyou.noteit.api.global.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cyou.noteit.api.domain.account.entity.role.Role;
 import cyou.noteit.api.global.config.security.filter.CustomErrorFilter;
 import cyou.noteit.api.global.config.security.service.CustomUserDetailsService;
 import cyou.noteit.api.global.redis.RedisUtil;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,12 +21,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.cors.CorsConfiguration;
-
-import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -85,25 +79,11 @@ public class SecurityConfig {
                         .requestMatchers("/category/**").hasAuthority("ROLE_ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/post/info/**", "/post/search/**").permitAll()
-                        .requestMatchers("/post/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/post/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/comment/info/**").permitAll()
                         .anyRequest().authenticated()
                 )
-
-                .cors((cors) -> cors
-                        .configurationSource((request) -> {
-                            CorsConfiguration configuration = new CorsConfiguration();
-                            configuration.setAllowCredentials(true);
-                            configuration.setAllowedOrigins(Collections.singletonList("*"));
-                            configuration.setAllowedHeaders(Collections.singletonList("*"));
-                            configuration.setAllowedMethods(Collections.singletonList("*"));
-                            configuration.setMaxAge(3600L);
-                            configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-                            return configuration;
-                        })
-                )
-
                 .build();
     }
 
