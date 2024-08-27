@@ -9,7 +9,7 @@ const config = {
 		adapter: adapter()
 	},
 	prerender: {
-		enabled: false // CSR을 원한다면 false로 설정
+		enabled: false
 	}
 };
 
