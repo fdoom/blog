@@ -14,6 +14,7 @@ import cyou.noteit.api.global.exception.CustomException;
 import cyou.noteit.api.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -75,9 +76,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<List<PostResponseDTO>> getAllPostInfo() {
+    public ResponseEntity<List<PostResponseDTO>> getAllPostInfo(Pageable pageable) {
         return ResponseEntity.ok(
-                postRepository.findAllByShareStatus(roleToShareStatus())
+                postRepository.findAllByShareStatus(roleToShareStatus(), pageable)
                         .stream()
                         .map(post -> modelMapper.map(post, PostResponseDTO.class))
                         .toList()
@@ -85,11 +86,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<List<PostResponseDTO>> getAllPostInfoByCategoryId(Long categoryId) {
+    public ResponseEntity<List<PostResponseDTO>> getAllPostInfoByCategoryId(Long categoryId, Pageable pageable) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
         return ResponseEntity.ok(
-                postRepository.findAllByShareStatusAndCategory(roleToShareStatus(), category.getCategoryId())
+                postRepository.findAllByShareStatusAndCategory(roleToShareStatus(), category.getCategoryId(), pageable)
                         .stream()
                         .map(post -> modelMapper.map(post, PostResponseDTO.class))
                         .toList()
@@ -105,9 +106,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<List<PostResponseDTO>> searchPostInfoByPostTitle(String postTitle) {
+    public ResponseEntity<List<PostResponseDTO>> searchPostInfoByPostTitle(String postTitle, Pageable pageable) {
         return ResponseEntity.ok(
-                postRepository.findAllByPostTitle(postTitle, roleToShareStatus())
+                postRepository.findAllByPostTitle(postTitle, roleToShareStatus(), pageable)
                         .stream()
                         .map(post -> modelMapper.map(post, PostResponseDTO.class))
                         .toList()

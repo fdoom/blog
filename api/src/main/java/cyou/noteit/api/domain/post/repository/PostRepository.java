@@ -2,6 +2,7 @@ package cyou.noteit.api.domain.post.repository;
 
 import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.domain.post.entity.Post;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,7 +39,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         END
     )
     """, nativeQuery = true)
-    List<Post> findAllByShareStatus(@Param("shareStatus") String shareStatus);
+    List<Post> findAllByShareStatus(@Param("shareStatus") String shareStatus, Pageable pageable);
 
     @Query(value = """
     SELECT *
@@ -52,7 +53,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         END
     )
     """, nativeQuery = true)
-    List<Post> findAllByShareStatusAndCategory(@Param("shareStatus") String shareStatus, @Param("categoryId") Long categoryId);
+    List<Post> findAllByShareStatusAndCategory(@Param("shareStatus") String shareStatus, @Param("categoryId") Long categoryId, Pageable pageable);
 
     @Query(value = """
     SELECT *
@@ -67,5 +68,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         END
     )
     """, nativeQuery = true)
-    List<Post> findAllByPostTitle(@Param("postTitle") String postTitle, @Param("shareStatus") String shareStatus);
+    List<Post> findAllByPostTitle(@Param("postTitle") String postTitle, @Param("shareStatus") String shareStatus, Pageable pageable);
 }

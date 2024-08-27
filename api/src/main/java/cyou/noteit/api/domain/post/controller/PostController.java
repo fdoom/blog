@@ -4,6 +4,9 @@ import cyou.noteit.api.domain.post.dto.request.PostRequestDTO;
 import cyou.noteit.api.domain.post.dto.response.PostResponseDTO;
 import cyou.noteit.api.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +34,13 @@ public class PostController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<List<PostResponseDTO>> getAllPostInfo() {
-        return postService.getAllPostInfo();
+    public ResponseEntity<List<PostResponseDTO>> getAllPostInfo(@PageableDefault(sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getAllPostInfo(pageable);
     }
 
     @GetMapping("/info/category/{categoryId}")
-    public ResponseEntity<List<PostResponseDTO>> getAllPostInfoByCategoryId(@PathVariable Long categoryId) {
-        return postService.getAllPostInfoByCategoryId(categoryId);
+    public ResponseEntity<List<PostResponseDTO>> getAllPostInfoByCategoryId(@PathVariable Long categoryId, @PageableDefault(sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getAllPostInfoByCategoryId(categoryId, pageable);
     }
 
     @DeleteMapping("/info/{postId}")
@@ -46,7 +49,7 @@ public class PostController {
     }
 
     @GetMapping("/search/{postTitle}")
-    public ResponseEntity<List<PostResponseDTO>> searchPostInfoByPostTitle(@PathVariable String postTitle) {
-        return postService.searchPostInfoByPostTitle(postTitle);
+    public ResponseEntity<List<PostResponseDTO>> searchPostInfoByPostTitle(@PathVariable String postTitle, @PageableDefault(sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.searchPostInfoByPostTitle(postTitle, pageable);
     }
 }
