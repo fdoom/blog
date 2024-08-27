@@ -4,7 +4,7 @@ services:
     environment:
       - TZ=Asia/Seoul
     ports:
-      - "5000:8080"
+      - "5173:5173"
     depends_on:
       - api
 
