@@ -1,6 +1,7 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
     import { API_BASE_URL } from '../config.js';
+    import { marked } from 'marked'
 
     let posts = [];
     let error = null;
@@ -78,7 +79,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{post.postTitle}</h5>
                         <p class="card-text"><small class="text-muted">작성일: {new Date(post.createdAt).toLocaleString()}</small></p>
-                        <p class="content">{post.postContent}</p>
+                        <p class="content">{@html marked(post.postContent)}</p>
                         <p class="share-status font-weight-bold text-primary">{post.shareStatus}</p>
                       </div>
                 </a>
