@@ -1,23 +1,37 @@
 <script>
-    import { onMount, onDestroy } from 'svelte';
+    import { onMount } from 'svelte';
     import { API_BASE_URL } from '../config.js';
     import { marked } from 'marked';
+    import { isLoggedIn } from '../store.js';
+    import { reissue } from '../common.js'
 
     let posts = [];
     let error = null;
     let page = 0;
     let isLoading = false;
-    let hasMore = true; // 더 많은 데이터가 있는지 여부
+    let hasMore = true;
 
     async function fetchPosts() {
         if (isLoading || !hasMore) return;
         isLoading = true;
 
+        const fetchOptions = {
+            method: 'GET',
+            credentials: "include",
+            headers: {}
+        };
+
+        if (isLoggedIn) {
+            fetchOptions.headers.Authorization = localStorage.getItem('accessToken');
+        }
+
         try {
-            const response = await fetch(`${API_BASE_URL}/post/info?page=${page}`);
+            const response = await makeRequestWithToken(fetchOptions);
+            
             if (!response.ok) {
-                throw new Error('네트워크 응답에 문제가 있습니다.');
+                throw new Error(`Error: ${response.statusText}`);
             }
+
             const data = await response.json();
 
             if (data.length === 0) {
@@ -33,11 +47,21 @@
         }
     }
 
-    // 페이지가 마운트될 때 첫 번째 페이지의 데이터를 로드
+    async function makeRequestWithToken(fetchOptions) {
+        let response = await fetch(`${API_BASE_URL}/post/info?page=${page}`, fetchOptions);
+
+        if (response.status === 401) {
+            await reissue();
+            fetchOptions.headers.Authorization = localStorage.getItem('accessToken');  // 새 토큰 설정
+            response = await fetch(`${API_BASE_URL}/post/info?page=${page}`, fetchOptions);
+        }
+
+        return response;
+    }
+
     onMount(() => {
         fetchPosts();
 
-        // IntersectionObserver 설정
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -47,13 +71,11 @@
             { threshold: 1.0 }
         );
 
-        // 스크롤 감지를 위한 대상 요소를 설정
         const sentinel = document.getElementById('sentinel');
         if (sentinel) {
             observer.observe(sentinel);
         }
     });
-
 </script>
 
 <main class="container my-4">

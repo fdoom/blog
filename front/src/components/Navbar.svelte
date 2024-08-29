@@ -7,6 +7,7 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link text-white" href="/">홈</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#">카테고리</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">글 작성</a></li>
         </ul>
         <form class="form-inline ml-auto">
             <div class="input-group">

@@ -1,8 +1,11 @@
 <script>
     import { page } from '$app/stores';
+    import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { API_BASE_URL } from '../../../config';
     import { marked } from 'marked';
+    import { isLoggedIn } from '../../../store';
+    import { reissue } from '../../../common';
 
     let postId;
     let postInfo = {};
@@ -11,16 +14,39 @@
 
     let isLoading = true;
 
+    const fetchOptions = {
+            method: 'GET',
+            credentials: "include",
+            headers: {}
+        };
+
+    async function makeRequestWithToken(fetchOptions) {
+        let response = await fetch(`${API_BASE_URL}/post/info/${postId}`, fetchOptions);
+
+        if (response.status === 401) {
+            await reissue();
+            fetchOptions.headers.Authorization = localStorage.getItem('accessToken');  // 새 토큰 설정
+            response = await fetch(`${API_BASE_URL}/post/info/${postId}`, fetchOptions);
+        }
+
+        return response;
+    }
+
     onMount(async () => {
+        if (isLoggedIn) {
+            fetchOptions.headers.Authorization = localStorage.getItem('accessToken');
+        }
+
         try {
-            const response = await fetch(`${API_BASE_URL}/post/info/${postId}`);
-            if (!response.ok) {
+            const response = await makeRequestWithToken(fetchOptions);
+            if (response.status != 400 && response.status != 404 && !response.ok) {
                 throw new Error('Network response was not ok');
             }
             postInfo = await response.json();
-            isLoading = false;
         } catch (error) {
             console.error('Error fetching post info:', error);
+        } finally {
+            isLoading = false;
         }
     });
 </script>

@@ -10,6 +10,15 @@
         accountInfo = $isLoggedIn ? '로그아웃' : '로그인'; // 스토어 값에 $를 붙여 사용
         accountHref = $isLoggedIn ? '/logout' : '/login'; // 스토어 값에 $를 붙여 사용
     }
+
+    onMount(() => {
+        if(localStorage.getItem('accessToken') == null) {
+            isLoggedIn.set(false);
+        }
+        else {
+            isLoggedIn.set(true);
+        }
+    });
 </script>
 
 <div class="text-right mr-5 mt-3">
