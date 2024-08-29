@@ -1,11 +1,10 @@
 <script>
     import { page } from '$app/stores';
-    import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { API_BASE_URL } from '../../../config';
     import { marked } from 'marked';
     import { isLoggedIn } from '../../../store';
-    import { reissue } from '../../../common';
+    import { reissue } from '../../../util/reissue';
 
     let postId;
     let postInfo = {};
