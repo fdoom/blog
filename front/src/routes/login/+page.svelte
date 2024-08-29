@@ -1,18 +1,17 @@
 <script>
     import { goto } from '$app/navigation';
     import { API_BASE_URL } from '../../config';
+    import { isLoggedIn } from '../../store';
 
     let username = '';
     let password = '';
 
     async function login() {
         try {
-            console.log('로그인 시도 중...');
-
             const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
-                credentials: "include",
                 body: JSON.stringify({ username, password }),
+                credentials: "include"
             });
 
             if (!response.ok) {
@@ -22,9 +21,9 @@
                 throw new Error('로그인 실패');
             }
             // Access Token을 localStorage에 저장
-            localStorage.setItem('accessToken', response.headers.accessToken);
-            
-            console.log('메인 페이지로 리다이렉션 중...');
+            localStorage.setItem('accessToken', response.headers.get('Authorization'));
+
+            isLoggedIn.set(true);
             // 메인 페이지로 리다이렉션
             goto('/');
         } catch (error) {
@@ -34,8 +33,21 @@
     }
 </script>
 
-<form on:submit|preventDefault={login}>
-    <input type="text" bind:value={username} placeholder="Username" required />
-    <input type="password" bind:value={password} placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Login</h2>
+            <form on:submit|preventDefault={login}>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" bind:value={username} placeholder="Username" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" bind:value={password} placeholder="Password" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+</div>

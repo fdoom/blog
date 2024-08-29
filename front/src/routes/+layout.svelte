@@ -1,80 +1,9 @@
 <script>
-    import { onMount } from 'svelte';
-  
-    let accessToken;
-    let refreshToken;
-  
-    // 쿠키에서 refreshToken 가져오는 함수
-    function getCookie(name) {
-    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-    return value? value[2] : null;
-    }
-  
-    // 컴포넌트가 마운트될 때 accessToken과 refreshToken 확인
-    onMount(() => {
-      // localStorage에서 accessToken 확인
-      accessToken = localStorage.getItem('accessToken');
-      if (accessToken) {
-        console.log('Access Token이 존재합니다:', accessToken);
-      } else {
-        console.log('Access Token이 존재하지 않습니다.');
-      }
-  
-      // 쿠키에서 refreshToken 확인
-      refreshToken = getCookie('refresh');
-      if (refreshToken) {
-        console.log('Refresh Token이 존재합니다:', refreshToken);
-      } else {
-        console.log('Refresh Token이 존재하지 않습니다.');
-      }
-    });
+    import AccountLink from "../components/AccountLink.svelte";
+    import Navbar from "../components/Navbar.svelte";
+
 </script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-primary rounded-bottom">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link text-white" href="#">홈</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#">카테고리</a></li>
-        </ul>
-        <form class="form-inline ml-auto">
-            <div class="input-group">
-                <input class="form-control" type="search" placeholder="검색..." aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-light" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</nav>
-
+<AccountLink/>
+<Navbar/>
 <slot></slot>
-
-
-<style>
-    nav {
-        margin: 10px;
-    }
-
-    .navbar {
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        border-radius: 30px !important; /* 네비게이션 바의 하단 모서리를 둥글게 */
-    }
-
-    .input-group {
-        width: 100%; /* 검색 바가 input-group의 너비를 가득 채우도록 설정 */
-    }
-
-    .nav-item .nav-link {
-        transition: color 0.4s; /* 글자 색의 변화를 부드럽게 전환 */
-    }
-
-    .nav-item .nav-link:hover {
-        color: #000000 !important; /* 호버 시 글자 색을 흰색으로 변경 */
-    }
-</style>
