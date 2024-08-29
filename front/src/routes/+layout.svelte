@@ -1,3 +1,36 @@
+<script>
+    import { onMount } from 'svelte';
+  
+    let accessToken;
+    let refreshToken;
+  
+    // 쿠키에서 refreshToken 가져오는 함수
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+  
+    // 컴포넌트가 마운트될 때 accessToken과 refreshToken 확인
+    onMount(() => {
+      // localStorage에서 accessToken 확인
+      accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        console.log('Access Token이 존재합니다:', accessToken);
+      } else {
+        console.log('Access Token이 존재하지 않습니다.');
+      }
+  
+      // 쿠키에서 refreshToken 확인
+      refreshToken = getCookie('refresh');
+      if (refreshToken) {
+        console.log('Refresh Token이 존재합니다:', refreshToken);
+      } else {
+        console.log('Refresh Token이 존재하지 않습니다.');
+      }
+    });
+</script>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-primary rounded-bottom">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

@@ -1,7 +1,7 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
     import { API_BASE_URL } from '../config.js';
-    import { marked } from 'marked'
+    import { marked } from 'marked';
 
     let posts = [];
     let error = null;
@@ -21,10 +21,10 @@
             const data = await response.json();
 
             if (data.length === 0) {
-                hasMore = false; // 더 이상 데이터가 없음
+                hasMore = false;
             } else {
                 posts = [...posts, ...data];
-                page += 1; // 다음 페이지로 넘어감
+                page += 1;
             }
         } catch (err) {
             error = err.message;
@@ -52,13 +52,6 @@
         if (sentinel) {
             observer.observe(sentinel);
         }
-
-        // 컴포넌트가 언마운트될 때 observer 해제
-        onDestroy(() => {
-            if (sentinel) {
-                observer.unobserve(sentinel);
-            }
-        });
     });
 
 </script>
@@ -90,7 +83,11 @@
     {/if}
     
     {#if isLoading}
-      <p class="text-center">로딩 중...</p>
+        <div class="text-center mt-5">
+            <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+            </div>
+        </div>
     {/if}
 
     <!-- 스크롤 감지를 위한 sentinel 요소 -->
