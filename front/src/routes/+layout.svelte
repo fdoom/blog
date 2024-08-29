@@ -6,9 +6,8 @@
   
     // 쿠키에서 refreshToken 가져오는 함수
     function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
+    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return value? value[2] : null;
     }
   
     // 컴포넌트가 마운트될 때 accessToken과 refreshToken 확인

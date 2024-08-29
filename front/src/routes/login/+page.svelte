@@ -11,6 +11,7 @@
 
             const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
+                credentials: "include",
                 body: JSON.stringify({ username, password }),
             });
 
