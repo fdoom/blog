@@ -1,11 +1,12 @@
 <script>
     import { onMount } from 'svelte';
+    import { API_BASE_URL } from '../../config';
   
     let categories = [];
   
     // Fetch categories from the API
     async function fetchCategories() {
-      const response = await fetch('http://localhost:8080/category/info');
+      const response = await fetch(`${API_BASE_URL}/category/info`);
       categories = await response.json();
     }
   
