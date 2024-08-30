@@ -6,8 +6,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 
 @Getter
-public class Catey
-        goryRequestDTO {
+public class CategoryRequestDTO {
     @NotBlank
     private String categoryName;
     @Positive
