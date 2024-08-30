@@ -1,9 +1,15 @@
 package cyou.noteit.api.domain.category.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 
 @Getter
-public class CategoryRequestDTO {
+public class Catey
+        goryRequestDTO {
+    @NotBlank
     private String categoryName;
+    @Positive
     private Long parentCategoryId;
 }
