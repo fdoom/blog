@@ -64,12 +64,14 @@
 
     async function editCategory(categoryId) {
         const categoryToEdit = categories.find(cat => cat.categoryId === categoryId);
-        const newName = prompt("Edit category name:", categoryToEdit.categoryName);
-        const parentCategoryId = Number(prompt("parentCategoryId:"));
-        if (newName) {
+        const categoryName = prompt("Edit category name:", categoryToEdit.categoryName);
+        const inputId = Number(prompt("parentCategoryId:"));
+        const parentCategoryId = inputId > 0 ? inputId : null;
+
+        if (categoryName) {
             fetchOptions.method = 'PUT'; // Change to PUT for updating
             fetchOptions.headers.Authorization = localStorage.getItem('accessToken');
-            fetchOptions.body = JSON.stringify({ categoryName: newName, parentCategoryId});
+            fetchOptions.body = JSON.stringify({ categoryName, parentCategoryId});
 
             let response = await fetch(`${API_BASE_URL}/category/info/${categoryId}`, fetchOptions);
 
