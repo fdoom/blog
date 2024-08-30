@@ -75,34 +75,53 @@
   }
 </script>
 
-<div class="container" style="max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-  <h1 style="font-size: 24px; margin-bottom: 20px; text-align: center;">Category List</h1>
+<div class="container">
+  <h1>Category List</h1>
 
   {#if categories.length > 0}
       <CategoryList {categories} depth={0} refreshCategories={fetchCategories} />
   {:else}
-      <p style="text-align: center;">Loading categories...</p>
+    <div class="text-center mt-5">
+        <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+        </div>
+    </div>
   {/if}
 </div>
 
 {#if $isLoggedIn}
-  <button 
-      style="
-          position: fixed; 
-          bottom: 20px; 
-          right: 20px; 
-          background-color: #28a745; 
-          color: white; 
-          border: none; 
-          padding: 15px 20px; 
-          border-radius: 50%; 
-          cursor: pointer; 
-          font-size: 20px; 
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-          transition: background-color 0.3s ease;
-      "
-      on:click={addNewCategory}
-  >
-      +
-  </button>
+  <button on:click={addNewCategory}>+</button>
 {/if}
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    button {
+        position: fixed; 
+        bottom: 20px; 
+        right: 20px; 
+        background-color: #28a745; 
+        color: white; 
+        border: none; 
+        padding: 15px 20px; 
+        border-radius: 50%; 
+        cursor: pointer; 
+        font-size: 20px; 
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+        transition: background-color 0.3s ease;
+    }
+</style>

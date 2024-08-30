@@ -20,10 +20,8 @@
 
             localStorage.removeItem('accessToken');
             isLoggedIn.set(false);
-            // 메인 페이지로 리다이렉션
-            goto('/');
         } catch (error) {
-            console.error('로그인 오류:', error);
+            console.error('로그아웃 오류:', error);
         }
     }
 
