@@ -90,7 +90,7 @@
 </div>
 
 {#if $isLoggedIn}
-  <button on:click={addNewCategory}>+</button>
+  <button class="fas fa-plus icon" on:click={addNewCategory}></button>
 {/if}
 
 <style>
@@ -115,9 +115,9 @@
         bottom: 20px; 
         right: 20px; 
         background-color: #28a745; 
-        color: white; 
+        color: white;
         border: none; 
-        padding: 15px 20px; 
+        padding: 20px 20px; 
         border-radius: 50%; 
         cursor: pointer; 
         font-size: 20px; 

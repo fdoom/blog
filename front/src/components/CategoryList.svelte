@@ -107,33 +107,30 @@
 
 <ul style="list-style-type: none; padding-left: {depth * 20}px; margin: 0;">
     {#each categories as category}
-        <li key={category.categoryId} style="margin: 5px 0; font-size: 18px;">
-            <div class="category-item" style="display: flex; justify-content: space-between; align-items: center; margin: 5px 0;">
-                <span style="display: inline-block; width: 100%;">
+        <li key={category.categoryId}>
+            <div class="category-item">
+                <span>
                     {#if depth > 0}
                         └─
                     {/if}
                     <a href="/category/{category.categoryId}" style="text-decoration: none;">{category.categoryName}</a>
                 </span>
                 {#if $isLoggedIn}
-                    <div class="button-group" style="display: flex; gap: 5px;">
+                    <div class="button-group">
                         <button
-                            style="background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s ease;"
+                            class="fas fa-plus icon addBtn"
                             on:click={() => addCategory(category.categoryId)}
                         >
-                            Add
                         </button>
                         <button
-                            style="background-color: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s ease;"
+                            class="fas fa-edit icon editBtn"
                             on:click={() => editCategory(category.categoryId)}
                         >
-                            Edit
                         </button>
                         <button
-                            style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s ease;"
+                            class="fas fa-trash icon deleteBtn"
                             on:click={() => deleteCategory(category.categoryId)}
                         >
-                            Delete
                         </button>
                     </div>
                 {/if}
@@ -144,3 +141,50 @@
         </li>
     {/each}
 </ul>
+
+
+<style>
+    li {
+        margin: 5px 0;
+        font-size: 18px;
+    }
+
+    .category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 5px 0;
+    }
+
+    span {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 5px;
+    }
+
+    button {
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .addBtn {
+        background-color: #28a745;
+    }
+
+    .editBtn {
+        background-color: #007bff;
+    }
+
+    .deleteBtn {
+        background-color: #dc3545;
+    }
+</style>
