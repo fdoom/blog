@@ -16,6 +16,11 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"marked": "^14.1.0"
+		"highlight.js": "^11.10.0",
+		"marked": "^14.1.0",
+		"marked-highlight": "^2.1.4",
+		"prismjs": "^1.29.0",
+		"pygmentize-bundled": "^2.3.0",
+		"svelte-markdown": "^0.4.1"
 	}
 }

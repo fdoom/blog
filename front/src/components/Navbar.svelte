@@ -1,3 +1,8 @@
+<script>
+    import { isLoggedIn } from "../store";
+
+</script>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-primary rounded-bottom">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -7,7 +12,10 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link text-white" href="/">홈</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="/category">카테고리</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#">글 작성</a></li>
+
+            {#if $isLoggedIn}
+                <li class="nav-item"><a class="nav-link text-white" href="/post/edit">글 작성</a></li>
+            {/if}
         </ul>
         <form class="form-inline ml-auto">
             <div class="input-group">

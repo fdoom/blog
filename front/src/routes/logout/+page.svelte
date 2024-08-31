@@ -17,17 +17,17 @@
                 console.error('서버 응답 오류:', errorMessage);
                 throw new Error('로그아웃에 실패');
             }
-
-            localStorage.removeItem('accessToken');
-            isLoggedIn.set(false);
         } catch (error) {
             console.error('로그아웃 오류:', error);
+        } finally {
+            localStorage.removeItem('accessToken');
+            isLoggedIn.set(false);
+            goto('/')
         }
     }
 
     onMount(() => {
         logout();
-        goto('/')
     })
     
 </script>
