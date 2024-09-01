@@ -1,10 +1,11 @@
 <script>
     import { page } from '$app/stores';
-    import { onMount } from 'svelte';
+    import { onMount, afterUpdate } from 'svelte';
     import { API_BASE_URL } from '../../../config';
     import { marked } from 'marked';
     import { isLoggedIn } from '../../../store';
     import { reissue } from '../../../util/reissue';
+    import hljs from 'highlight.js';
 
     let postId;
     let postInfo = {};
@@ -48,6 +49,10 @@
             isLoading = false;
         }
     });
+
+    afterUpdate(async () => {
+        hljs.highlightAll();
+    })
 
     function editPost() {
         //게시물 편집 페이지로 이동

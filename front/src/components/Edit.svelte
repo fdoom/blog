@@ -1,19 +1,11 @@
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, afterUpdate } from 'svelte';
     import { marked } from 'marked';
     import hljs from 'highlight.js';
     import 'highlight.js/styles/github.css';
     import { reissue } from '../util/reissue';
     import { goto } from '$app/navigation';
     import { API_BASE_URL } from '../config';
-
-    marked.setOptions({
-        highlight: (code, lang) => {
-            const language = lang && hljs.getLanguage(lang) ? lang : 'plaintext';
-            return hljs.highlight(code, { language }).value;
-        },
-        breaks: true
-    });
 
     let postInfo = {
         postTitle: '',
@@ -65,6 +57,10 @@
             alert(error.message);
         }
     });
+
+    afterUpdate(async () => {
+        hljs.highlightAll();
+    })
 
     const handleInput = (event) => {
         postInfo.postContent = event.target.value;
