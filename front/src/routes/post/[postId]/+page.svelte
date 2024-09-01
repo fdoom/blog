@@ -24,7 +24,7 @@
 
         if (response.status === 401) {
             await reissue();
-            fetchOptions.headers.Authorization = localStorage.getItem('accessToken');  // 새 토큰 설정
+            fetchOptions.headers.Authorization = localStorage.getItem('accessToken');
             response = await fetch(`${API_BASE_URL}/post/info/${postId}`, fetchOptions);
         }
 

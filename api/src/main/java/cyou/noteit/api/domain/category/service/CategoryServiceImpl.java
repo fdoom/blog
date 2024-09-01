@@ -3,6 +3,7 @@ package cyou.noteit.api.domain.category.service;
 import cyou.noteit.api.domain.account.entity.Account;
 import cyou.noteit.api.domain.category.dto.request.CategoryRequestDTO;
 import cyou.noteit.api.domain.category.dto.response.CategoryResponseDTO;
+import cyou.noteit.api.domain.category.dto.response.CategoryResponseListDTO;
 import cyou.noteit.api.domain.category.entity.Category;
 import cyou.noteit.api.domain.category.repository.CategoryRepository;
 import cyou.noteit.api.global.config.security.util.SecurityUtil;
@@ -107,6 +108,16 @@ public class CategoryServiceImpl implements CategoryService {
                 categoryRepository.findByCategoryName(categoryName)
                         .stream()
                         .map(this::mapCategoryToDTO)
+                        .toList()
+        );
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryResponseListDTO>> getCategoryAllInfo() {
+        return ResponseEntity.ok(
+                categoryRepository.findAll()
+                        .stream()
+                        .map(category -> modelMapper.map(category, CategoryResponseListDTO.class))
                         .toList()
         );
     }

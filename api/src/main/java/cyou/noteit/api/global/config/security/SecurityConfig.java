@@ -75,13 +75,15 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/account/join","/reissue").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/category/info", "/category/search/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/category/info/**", "/category/search/**").permitAll()
                         .requestMatchers("/category/**").hasAuthority("ROLE_ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/post/info/**", "/post/search/**").permitAll()
-                        .requestMatchers("/post/**").permitAll()
+                        .requestMatchers("/post/**").hasAuthority("ROLE_ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/comment/info/**").permitAll()
+
+                        .requestMatchers("/image/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .build();

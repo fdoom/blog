@@ -2,6 +2,7 @@ package cyou.noteit.api.domain.category.service;
 
 import cyou.noteit.api.domain.category.dto.request.CategoryRequestDTO;
 import cyou.noteit.api.domain.category.dto.response.CategoryResponseDTO;
+import cyou.noteit.api.domain.category.dto.response.CategoryResponseListDTO;
 import cyou.noteit.api.domain.category.entity.Category;
 import org.springframework.http.ResponseEntity;
 
@@ -17,4 +18,6 @@ public interface CategoryService {
     ResponseEntity<Void> deleteCategoryInfo(Long categoryId);
 
     ResponseEntity<List<CategoryResponseDTO>> searchCategoryName(String categoryName);
+
+    ResponseEntity<List<CategoryResponseListDTO>> getCategoryAllInfo();
 }

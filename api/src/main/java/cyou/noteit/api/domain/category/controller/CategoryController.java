@@ -2,6 +2,7 @@ package cyou.noteit.api.domain.category.controller;
 
 import cyou.noteit.api.domain.category.dto.request.CategoryRequestDTO;
 import cyou.noteit.api.domain.category.dto.response.CategoryResponseDTO;
+import cyou.noteit.api.domain.category.dto.response.CategoryResponseListDTO;
 import cyou.noteit.api.domain.category.entity.Category;
 import cyou.noteit.api.domain.category.service.CategoryService;
 import jakarta.validation.Valid;
@@ -40,5 +41,10 @@ public class CategoryController {
     @GetMapping("/search/{categoryName}")
     public ResponseEntity<List<CategoryResponseDTO>> searchCategory(@PathVariable String categoryName) {
         return categoryService.searchCategoryName(categoryName);
+    }
+
+    @GetMapping("/info/list")
+    public ResponseEntity<List<CategoryResponseListDTO>> getCategoryAllInfo() {
+        return categoryService.getCategoryAllInfo();
     }
 }
