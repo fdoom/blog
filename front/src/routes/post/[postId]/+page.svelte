@@ -14,10 +14,10 @@
     let isLoading = true;
 
     const fetchOptions = {
-            method: 'GET',
-            credentials: "include",
-            headers: {}
-        };
+        method: 'GET',
+        credentials: "include",
+        headers: {}
+    };
 
     async function makeRequestWithToken(fetchOptions) {
         let response = await fetch(`${API_BASE_URL}/post/info/${postId}`, fetchOptions);
@@ -48,6 +48,16 @@
             isLoading = false;
         }
     });
+
+    function editPost() {
+        // Edit post logic here
+        console.log('Edit post');
+    }
+
+    function deletePost() {
+        // Delete post logic here
+        console.log('Delete post');
+    }
 </script>
 
 {#if isLoading}
@@ -55,13 +65,15 @@
         <div class="spinner-border" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-      </div>
+    </div>
 {:else}
     <div class="container mt-5">
         <div class="card shadow">
             <div class="card-body">
                 <h1 class="card-title">{postInfo.postTitle}</h1>
-                <p class="card-text">{@html postInfo.postContent ? marked(postInfo.postContent) : 'Post content not found.'}</p>
+                <p class="card-text">
+                    {@html postInfo.postContent ? marked(postInfo.postContent.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;" />')) : 'Post content not found.'}
+                </p>
                 <hr />
                 <div class="meta">
                     <p class="text-muted">Created At: {new Date(postInfo.createdAt).toLocaleString()}</p>
@@ -70,14 +82,48 @@
                         Share Status: {postInfo.shareStatus}
                     </span>
                 </div>
+
+                {#if $isLoggedIn}
+                    <div class="actions">
+                        <button class="btn btn-primary" on:click={editPost}>
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" on:click={deletePost}>
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                {/if}
             </div>
         </div>
     </div>
 {/if}
 
 <style>
-    /* You can add custom styles here if needed */
     .meta {
         margin-top: 20px;
+    }
+
+    .actions {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .actions button {
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        margin-left: 10px;
+        border-radius: 50%;
+    }
+
+    .card-text img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
     }
 </style>
