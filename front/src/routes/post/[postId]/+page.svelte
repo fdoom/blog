@@ -5,6 +5,7 @@
     import { marked } from 'marked';
     import { isLoggedIn } from '../../../store';
     import { reissue } from '../../../util/reissue';
+    import { goto } from '$app/navigation';
     import hljs from 'highlight.js';
 
     let postId;
