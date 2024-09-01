@@ -50,12 +50,12 @@
     });
 
     function editPost() {
-        // Edit post logic here
-        console.log('Edit post');
+        //게시물 편집 페이지로 이동
+        goto(`/post/edit/${postId}`); // postId를 포함하여 경로 변경
     }
 
     function deletePost() {
-        // Delete post logic here
+        // TODO: 게시물 삭제 로직 구현
         console.log('Delete post');
     }
 </script>
@@ -118,12 +118,5 @@
         font-size: 18px;
         margin-left: 10px;
         border-radius: 50%;
-    }
-
-    .card-text img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 0 auto;
     }
 </style>
