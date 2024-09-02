@@ -20,4 +20,6 @@ public interface CategoryService {
     ResponseEntity<List<CategoryResponseDTO>> searchCategoryName(String categoryName);
 
     ResponseEntity<List<CategoryResponseListDTO>> getCategoryAllInfo();
+
+    ResponseEntity<CategoryResponseDTO> getCategoryPostId(Long postId);
 }

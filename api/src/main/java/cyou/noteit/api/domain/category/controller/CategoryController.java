@@ -47,4 +47,9 @@ public class CategoryController {
     public ResponseEntity<List<CategoryResponseListDTO>> getCategoryAllInfo() {
         return categoryService.getCategoryAllInfo();
     }
+
+    @GetMapping("/info/post/{postId}")
+    public ResponseEntity<CategoryResponseDTO> getCategoryPostId(@PathVariable Long postId) {
+        return categoryService.getCategoryPostId(postId);
+    }
 }

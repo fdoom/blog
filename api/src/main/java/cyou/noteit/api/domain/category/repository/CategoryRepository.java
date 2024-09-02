@@ -23,4 +23,13 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         AGAINST(:categoryName IN NATURAL LANGUAGE MODE)
     """, nativeQuery = true)
     List<Category> findByCategoryName(@Param("categoryName") String categoryName);
+
+
+    @Query("""
+    SELECT c
+    FROM Category c
+    JOIN c.posts p
+    WHERE p.postId = :postId
+    """)
+    Optional<Category> findCategoryByPostId(Long postId);
 }

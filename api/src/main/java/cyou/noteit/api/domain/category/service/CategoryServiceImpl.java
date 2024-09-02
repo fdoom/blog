@@ -121,4 +121,15 @@ public class CategoryServiceImpl implements CategoryService {
                         .toList()
         );
     }
+
+    @Override
+    public ResponseEntity<CategoryResponseDTO> getCategoryPostId(Long postId) {
+        return ResponseEntity.ok(
+                modelMapper.map(
+                        categoryRepository.findCategoryByPostId(postId)
+                                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND)),
+                        CategoryResponseDTO.class
+                )
+        );
+    }
 }

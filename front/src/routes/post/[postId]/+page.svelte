@@ -56,14 +56,47 @@
     })
 
     function editPost() {
-        //게시물 편집 페이지로 이동
-        goto(`/post/edit/${postId}`); // postId를 포함하여 경로 변경
+        goto(`/post/edit/${postId}`);
     }
 
-    function deletePost() {
-        // TODO: 게시물 삭제 로직 구현
-        console.log('Delete post');
+    async function deletePost() {
+        if(prompt('정말로 해당 게시물을 삭제하시겠습니까?\n게시물의 제목을 입력하면 삭제됩니다.') == postInfo.postTitle) {
+            try {
+                let response = await fetch(`${API_BASE_URL}/post/info/${postId}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        Authorization: localStorage.getItem('accessToken')
+                    },
+                });
+
+                if(response.status == 401) {
+                    await reissue();
+                    response = await fetch(`${API_BASE_URL}/post/info/${postId}`, {
+                        method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            Authorization: localStorage.getItem('accessToken')
+                        },
+                    });
+                }
+
+                if(response.ok) {
+                    goto('/');
+                } else if(response.status == 403) {
+                    throw Error('권한이 없습니다.');
+                } else if(response.status == 404) {
+                    throw Error('삭제 가능한 게시물이 존재하지 않습니다.');
+                } else {
+                    throw Error('삭제하는데 실패했습니다.');
+                }
+            } catch(error) {
+                alert(error.message)
+            }
+        }
     }
+    
+
 </script>
 
 {#if isLoading}

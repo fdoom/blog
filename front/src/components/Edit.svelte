@@ -55,7 +55,18 @@
                     throw Error('해당 페이지를 불러오는데 오류가 발생했습니다.');
                 }
 
-                // TODO: 페이지 기반의 정보를 기반으로 카테고리 정보 조회
+                response = await fetch(`${API_BASE_URL}/category/info/post/${postId}`, {
+                    method: 'GET'
+                })
+
+                if(response.ok) {
+                    const categoryInfo = await response.json();
+                    postInfo.categoryId = categoryInfo.categoryId;
+                } else if(response.status == 404) {
+                    throw Error('존재하지 않습니다.');
+                } else {
+                    throw Error('카테고리 정보를 불러오는데 오류가 발생했습니다.');
+                }
             }
             response = await fetch(`${API_BASE_URL}/category/info/list`, {
                 method: 'GET',
