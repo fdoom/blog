@@ -152,6 +152,7 @@
             }
         } catch (error) {
             alert(error.message);
+            window.history.back();
         }
     }
 
@@ -342,10 +343,11 @@
 
     .container {
         display: flex;
-        height: calc(100% - 60px);
+        height: 100%;
         width: 100%;
         padding: 0;
         position: relative;
+        margin-bottom: 80px;
     }
 
     textarea {
@@ -356,6 +358,7 @@
         box-sizing: border-box;
         border-radius: 20px;
         height: auto;
+        
     }
 
     .preview {
