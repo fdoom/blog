@@ -23,12 +23,41 @@
     export let postId = null;
 
     onMount(async () => {
-        if(postId) {
-            console.log(postId);
-        }
             
         try {
-            const response = await fetch(`${API_BASE_URL}/category/info/list`, {
+            let response = null;
+            if(postId) {
+                response = await fetch(`${API_BASE_URL}/post/info/${postId}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        Authorization: localStorage.getItem('accessToken')
+                    }
+                })
+
+                if(response.status == 401) {
+                    await reissue();
+
+                    response = await fetch(`${API_BASE_URL}/post/info/${postId}`, {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            Authorization: localStorage.getItem('accessToken')
+                        }
+                    });
+                }
+
+                if(response.ok) {
+                    postInfo = await response.json();
+                } else if(response.status == 403) {
+                    throw Error('권한이 없습니다.');
+                } else {
+                    throw Error('해당 페이지를 불러오는데 오류가 발생했습니다.');
+                }
+
+                // TODO: 페이지 기반의 정보를 기반으로 카테고리 정보 조회
+            }
+            response = await fetch(`${API_BASE_URL}/category/info/list`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -122,12 +151,12 @@
                 throw new Error(errorData.message || '게시물 등록에 실패했습니다.');
             }
         } catch (error) {
-            alert(error.message); // 오류 메시지 알림
+            alert(error.message);
         }
     }
 
     const handleCancel = () => {
-        goto('/');
+        window.history.back();
     };
 
     const handleKeyDown = (event) => {
