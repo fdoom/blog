@@ -76,8 +76,6 @@
 </script>
 
 <div class="container">
-  <h1>Category List</h1>
-
   {#if categories.length > 0}
       <CategoryList {categories} depth={0} refreshCategories={fetchCategories} />
   {:else}

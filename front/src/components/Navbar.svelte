@@ -1,6 +1,12 @@
 <script>
     import { isLoggedIn } from "../store";
+    import { goto } from '$app/navigation';
 
+    let searchQuery = '';
+
+    function handleSearch() {
+        goto(`/search/${searchQuery}`)
+    }
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-primary rounded-bottom">
@@ -17,9 +23,14 @@
                 <li class="nav-item"><a class="nav-link text-white" href="/post/edit">글 작성</a></li>
             {/if}
         </ul>
-        <form class="form-inline ml-auto">
+        <form class="form-inline ml-auto" on:submit|preventDefault={handleSearch}>
             <div class="input-group">
-                <input class="form-control" type="search" placeholder="검색..." aria-label="Search">
+                <input 
+                    class="form-control" 
+                    type="search" 
+                    placeholder="검색..." 
+                    aria-label="Search" 
+                    bind:value={searchQuery}>
                 <div class="input-group-append">
                     <button class="btn btn-outline-light" type="submit">
                         <i class="fas fa-search"></i>
