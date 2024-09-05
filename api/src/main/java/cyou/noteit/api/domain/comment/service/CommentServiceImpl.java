@@ -89,6 +89,7 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentResponseDTO getChildCommentInfoList(Comment comment) {
         CommentResponseDTO commentResponseDTO = modelMapper.map(comment, CommentResponseDTO.class);
+        commentResponseDTO.setUsername(comment.getAccount().getUsername());
 
         commentResponseDTO.setChildComments(
                 comment.getChildComments()

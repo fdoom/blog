@@ -5,12 +5,15 @@
   import { isLoggedIn } from '../../store';
   import { goto } from '$app/navigation';
   import { reissue } from '../../util/reissue';
-  import CategoryList from '../../components/CategoryList.svelte';
+  import Category from '../../components/Category.svelte';
 
   let categories = [];
+  let isLoading = true;
 
   onMount(async () => {
-      await fetchCategories();
+        isLoading = true;
+        await fetchCategories();
+        isLoading = false;
   });
 
   async function fetchCategories() {
@@ -77,8 +80,11 @@
 
 <div class="container">
   {#if categories.length > 0}
-      <CategoryList {categories} depth={0} refreshCategories={fetchCategories} />
-  {:else}
+      <Category {categories} depth={0} refreshCategories={fetchCategories} />
+
+  {/if}
+
+  {#if isLoading}
     <div class="text-center mt-5">
         <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
@@ -100,12 +106,6 @@
         border-radius: 8px;
         background-color: #f9f9f9;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        text-align: center;
     }
 
     button {

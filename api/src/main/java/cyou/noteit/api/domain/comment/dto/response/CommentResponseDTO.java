@@ -12,5 +12,8 @@ public class CommentResponseDTO extends BaseEntityDTO {
     private String commentContent;
 
     @Setter
+    private String username;
+
+    @Setter
     private List<CommentResponseDTO> childComments;
 }

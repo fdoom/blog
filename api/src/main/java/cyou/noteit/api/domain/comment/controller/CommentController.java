@@ -4,6 +4,7 @@ import cyou.noteit.api.domain.comment.dto.request.CommentRequestDTO;
 import cyou.noteit.api.domain.comment.dto.request.CommentUpdateRequestDTO;
 import cyou.noteit.api.domain.comment.dto.response.CommentResponseDTO;
 import cyou.noteit.api.domain.comment.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/info")
-    public ResponseEntity<CommentResponseDTO> createComment(@RequestBody CommentRequestDTO commentRequestDTO) {
+    public ResponseEntity<CommentResponseDTO> createComment(@Valid @RequestBody CommentRequestDTO commentRequestDTO) {
         return commentService.createComment(commentRequestDTO);
     }
 
@@ -27,7 +28,7 @@ public class CommentController {
     }
 
     @PutMapping("/info/{commentId}")
-    public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody CommentUpdateRequestDTO commentUpdateRequestDTO) {
+    public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @Valid @RequestBody CommentUpdateRequestDTO commentUpdateRequestDTO) {
         return commentService.updateComment(commentId, commentUpdateRequestDTO);
     }
 

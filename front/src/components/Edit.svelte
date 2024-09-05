@@ -131,25 +131,49 @@
         }
 
         try {
-            let response = await fetch(`${API_BASE_URL}/post/info`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('accessToken')
-                },
-                body: JSON.stringify(postInfo) // 리팩토링된 객체 사용
-            });
+            let response;
+            if(postId) {
+                response = await fetch(`${API_BASE_URL}/post/info/${postId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('accessToken')
+                    },
+                    body: JSON.stringify(postInfo)
+                });
 
-            if (response.status == 401) {
-                await reissue();
+                if (response.status == 401) {
+                    await reissue();
+                    response = await fetch(`${API_BASE_URL}/post/info/${postId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('accessToken')
+                        },
+                        body: JSON.stringify(postInfo)
+                    });
+                }
+            } else {
                 response = await fetch(`${API_BASE_URL}/post/info`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': localStorage.getItem('accessToken')
                     },
-                    body: JSON.stringify(postInfo) // 리팩토링된 객체 사용
+                    body: JSON.stringify(postInfo)
                 });
+
+                if (response.status == 401) {
+                    await reissue();
+                    response = await fetch(`${API_BASE_URL}/post/info`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('accessToken')
+                        },
+                        body: JSON.stringify(postInfo)
+                    });
+                }
             }
 
             if (response.ok) {

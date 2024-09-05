@@ -7,9 +7,13 @@
     import { reissue } from '../../../util/reissue';
     import { goto } from '$app/navigation';
     import hljs from 'highlight.js';
+    import Comment from '../../../components/Comment.svelte';
 
     let postId;
     let postInfo = {};
+    let comments = [];
+    let parentCommentId = null;
+    let commentContent = "";
 
     $: postId = $page.params.postId;
 
@@ -44,6 +48,7 @@
                 throw new Error('Network response was not ok');
             }
             postInfo = await response.json();
+            await getComments();
         } catch (error) {
             console.error('Error fetching post info:', error);
         } finally {
@@ -95,6 +100,65 @@
             }
         }
     }
+
+    async function getComments() {
+        const response = await fetch(`${API_BASE_URL}/comment/info/post/${postId}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+
+        if(response.ok) {
+            comments = await response.json();
+        }
+    }
+
+    async function createComment() {
+        const accessToken = localStorage.getItem('accessToken')
+        if(accessToken) {
+            let response = await fetch(`${API_BASE_URL}/comment/info`, {
+                method: 'POSt',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: accessToken,
+                },
+
+                body: JSON.stringify({
+                        postId,
+                        parentCommentId,
+                        commentContent
+                })
+            })
+
+            if(response.status == 401) {
+                await reissue();
+                response = await fetch(`${API_BASE_URL}/comment/info`, {
+                    method: 'POSt',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: localStorage.getItem('accessToken'),
+                    },
+
+                    body: JSON.stringify({
+                            postId,
+                            parentCommentId,
+                            commentContent
+                    })
+                })
+            }
+
+            if(response.ok) {
+                getComments();
+            } else {
+                const responseBody = await response.json();
+                alert(responseBody.message);
+            }
+        } else {
+            alert('로그인이 필요합니다.');
+        }
+
+    }
     
 
 </script>
@@ -111,14 +175,14 @@
             <div class="card-body">
                 <h1 class="card-title">{postInfo.postTitle}</h1>
                 <p class="card-text">
-                    {@html postInfo.postContent ? marked(postInfo.postContent.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;" />')) : 'Post content not found.'}
+                    {@html postInfo.postContent ? marked(postInfo.postContent.replace(/!\[(.*?)\]\((.*?)\)/g, '<div style="text-align: center"><img src="$2" alt="$1" style="max-width: 100%; height: auto;"/></div>')) : 'Post content not found.'}
                 </p>
                 <hr />
                 <div class="meta">
-                    <p class="text-muted">Created At: {new Date(postInfo.createdAt).toLocaleString()}</p>
-                    <p class="text-muted">Updated At: {new Date(postInfo.updatedAt).toLocaleString()}</p>
-                    <span class="badge {postInfo.shareStatus === 'PUBLIC' ? 'badge-success' : 'badge-danger'}">
-                        Share Status: {postInfo.shareStatus}
+                    <p class="text-muted">작성일: {new Date(postInfo.createdAt).toLocaleString()}</p>
+                    <p class="text-muted">수정일: {new Date(postInfo.updatedAt).toLocaleString()}</p>
+                    <span class="badge {postInfo.shareStatus === 'PUBLIC' ? 'badge-success' : (postInfo.shareStatus === 'PROTECTED' ? 'badge badge-warning' : 'badge-danger')}">
+                        {postInfo.shareStatus}
                     </span>
                 </div>
 
@@ -132,6 +196,16 @@
                         </button>
                     </div>
                 {/if}
+
+                <div class="comment-input mt-4">
+                    <textarea placeholder="댓글을 입력하세요" bind:value={commentContent}></textarea>
+                    <button class="btn btn-success mt-2" on:click={createComment}>댓글 작성</button>
+                </div>
+            </div>
+            <div class="mt-5 p-2">
+                {#each comments as comment}
+                    <Comment comment={comment} depth={0} postId={postId} getComments={getComments}/>
+                {/each}
             </div>
         </div>
     </div>
@@ -142,10 +216,13 @@
         margin-top: 20px;
     }
 
+    .meta > p {
+        margin: 2px;
+    }
+
     .actions {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
+        float: right;
+        margin: 10px;
     }
 
     .actions button {
@@ -157,5 +234,17 @@
         font-size: 18px;
         margin-left: 10px;
         border-radius: 50%;
+    }
+
+    .comment-input textarea {
+        width: 100%;
+        height: 80px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .comment-input button {
+        float: right;
     }
 </style>
