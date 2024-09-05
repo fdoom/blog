@@ -1,5 +1,6 @@
 <script>
     import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
     import { API_BASE_URL } from '../../config';
     import { isLoggedIn } from '../../store';
 
@@ -31,6 +32,12 @@
             alert('로그인에 실패했습니다. 다시 시도해주세요.');
         }
     }
+
+    onMount(() => {
+        if($isLoggedIn) {
+            goto('/');
+        }
+    })
 </script>
 
 <div class="container mt-5">
@@ -48,6 +55,9 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
+            <div class="text-center mt-3">
+                <p>Don't have an account? <a href='/join'>Sign Up</a></p>
+            </div>
         </div>
     </div>
 </div>

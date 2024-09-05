@@ -49,7 +49,7 @@ public class CustomErrorFilter extends GenericFilterBean {
         log.error("Filter Exception caught: {} - {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        writeErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        writeErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, "서버에서 오류가 발생했습니다.");
     }
 
     private void writeErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {

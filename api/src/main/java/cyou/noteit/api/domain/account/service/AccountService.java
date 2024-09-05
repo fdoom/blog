@@ -9,4 +9,6 @@ public interface AccountService {
     ResponseEntity<JoinResponseDTO> joinAccount(JoinRequestDTO joinRequestDTO);
 
     ResponseEntity<Void> alterPassword(AlterRequestDTO alterRequestDTO);
+
+    ResponseEntity<Void> deleteInfo();
 }

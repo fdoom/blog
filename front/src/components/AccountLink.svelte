@@ -23,4 +23,7 @@
 
 <div class="text-right mr-5 mt-3">
     <a href={accountHref}>{accountInfo}</a>
+    {#if $isLoggedIn}
+        <a href='/myPage'><i class="fa-solid fa-gear"></i></a>
+    {/if}
 </div>

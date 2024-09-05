@@ -59,4 +59,11 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
         return ResponseEntity.ok().build();
     }
+
+    @Override
+    public ResponseEntity<Void> deleteInfo() {
+        Account account = securityUtil.getAccount();
+        accountRepository.delete(account);
+        return ResponseEntity.ok().build();
+    }
 }

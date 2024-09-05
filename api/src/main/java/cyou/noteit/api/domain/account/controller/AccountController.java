@@ -26,4 +26,9 @@ public class AccountController {
     public ResponseEntity<Void> alter(@Valid @RequestBody AlterRequestDTO alterRequestDTO) {
         return accountService.alterPassword(alterRequestDTO);
     }
+
+    @DeleteMapping("/info")
+    public ResponseEntity<Void> deleteInfo() {
+        return accountService.deleteInfo();
+    }
 }
