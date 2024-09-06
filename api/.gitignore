@@ -39,5 +39,3 @@ out/
 ### ENV ###
 *.pem
 env.*
-
-index.html

@@ -14,5 +14,3 @@ services:
       - TZ=Asia/Seoul
     ports:
       - "8080:8080"
-    volumes:
-      - ./api:/app
