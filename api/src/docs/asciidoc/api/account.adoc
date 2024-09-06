@@ -1,0 +1,23 @@
+
+=== 회원 가입
+==== 요청
+include::{snippets}/account-join/http-request.adoc[]
+include::{snippets}/account-join/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/account-join/http-response.adoc[]
+include::{snippets}/account-join/response-fields.adoc[]
+
+=== 비밀번호 변경
+==== 요청
+include::{snippets}/account-alter/http-request.adoc[]
+include::{snippets}/account-alter/request-headers.adoc[]
+include::{snippets}/account-alter/request-fields.adoc[]
+==== 응답
+include::{snippets}/account-alter/http-response.adoc[]
+
+=== 회원탈퇴
+==== 요청
+include::{snippets}/account-delete-info/http-request.adoc[]
+==== 응답
+include::{snippets}/account-delete-info/http-response.adoc[]

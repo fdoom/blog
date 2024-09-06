@@ -4,7 +4,6 @@ import cyou.noteit.api.domain.account.dto.request.AlterRequestDTO;
 import cyou.noteit.api.domain.account.dto.request.JoinRequestDTO;
 import cyou.noteit.api.domain.account.dto.response.JoinResponseDTO;
 import cyou.noteit.api.domain.account.service.AccountService;
-import cyou.noteit.api.global.config.security.util.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
