@@ -9,3 +9,6 @@
 
 == AccountController 테스트
 include::api/account.adoc[]
+
+== CategoryController 테스트
+include::api/category.adoc[]

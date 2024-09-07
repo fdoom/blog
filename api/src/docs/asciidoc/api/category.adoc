@@ -1,0 +1,52 @@
+=== 카테고리 등록
+==== 요청
+include::{snippets}/category-create-info/http-request.adoc[]
+include::{snippets}/category-create-info/request-headers.adoc[]
+include::{snippets}/category-create-info/request-fields.adoc[]
+==== 응답
+include::{snippets}/category-create-info/http-response.adoc[]
+include::{snippets}/category-create-info/response-fields.adoc[]
+
+
+=== 카테고리 조회
+==== 요청
+include::{snippets}/category-get-info/http-request.adoc[]
+==== 응답
+include::{snippets}/category-get-info/http-response.adoc[]
+include::{snippets}/category-get-info/response-fields.adoc[]
+
+=== 카테고리 변경
+==== 요청
+include::{snippets}/category-update-info/http-request.adoc[]
+include::{snippets}/category-update-info/request-headers.adoc[]
+include::{snippets}/category-update-info/request-fields.adoc[]
+==== 응답
+include::{snippets}/category-update-info/response-fields.adoc[]
+
+=== 카테고리 삭제
+==== 요청
+include::{snippets}/category-delete-info/http-request.adoc[]
+include::{snippets}/category-delete-info/request-headers.adoc[]
+==== 응답
+include::{snippets}/category-delete-info/http-response.adoc[]
+
+=== 카테고리 검색
+==== 요청
+include::{snippets}/category-search-info/http-request.adoc[]
+==== 응답
+include::{snippets}/category-search-info/http-response.adoc[]
+include::{snippets}/category-search-info/response-fields.adoc[]
+
+=== 카테고리 리스트
+==== 요청
+include::{snippets}/category-info-list/http-request.adoc[]
+==== 응답
+include::{snippets}/category-info-list/http-response.adoc[]
+include::{snippets}/category-info-list/response-fields.adoc[]
+
+=== 특정 게시물에 대한 카테고리 정보 조회
+==== 요청
+include::{snippets}/category-postId-info/http-request.adoc[]
+==== 응답
+include::{snippets}/category-postId-info/http-response.adoc[]
+include::{snippets}/category-postId-info/response-fields.adoc[]

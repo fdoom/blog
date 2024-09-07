@@ -6,6 +6,7 @@ import cyou.noteit.api.global.config.security.service.CustomUserDetailsService;
 import cyou.noteit.api.global.exception.CustomException;
 import cyou.noteit.api.global.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -48,6 +49,8 @@ public class JwtFilter extends OncePerRequestFilter {
             jwtUtil.isExpired(accessToken);
         } catch (ExpiredJwtException e) {
             throw new CustomException(ErrorCode.ACCESS_TOKEN_EXPIRED);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
 
         String category = jwtUtil.getCategory(accessToken);
