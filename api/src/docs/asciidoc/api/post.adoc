@@ -1,0 +1,58 @@
+=== 게시물 등록
+==== 요청
+include::{snippets}/post-create-info/http-request.adoc[]
+include::{snippets}/post-create-info/request-headers.adoc[]
+include::{snippets}/post-create-info/request-fields.adoc[]
+==== 응답
+include::{snippets}/post-create-info/http-response.adoc[]
+include::{snippets}/post-create-info/response-fields.adoc[]
+
+=== 게시물 변경
+==== 요청
+include::{snippets}/post-update-info/http-request.adoc[]
+include::{snippets}/post-update-info/request-headers.adoc[]
+include::{snippets}/post-update-info/request-fields.adoc[]
+==== 응답
+include::{snippets}/post-update-info/http-response.adoc[]
+include::{snippets}/post-update-info/response-fields.adoc[]
+
+
+=== 게시물 단일 조회
+==== 요청
+include::{snippets}/post-get-info/http-request.adoc[]
+include::{snippets}/post-get-info/request-headers.adoc[]
+==== 응답
+include::{snippets}/post-get-info/http-response.adoc[]
+include::{snippets}/post-get-info/response-fields.adoc[]
+
+=== 게시물 목록 조회
+==== 응답
+include::{snippets}/post-get-all-info/http-request.adoc[]
+include::{snippets}/post-get-all-info/request-headers.adoc[]
+==== 응답
+include::{snippets}/post-get-all-info/http-response.adoc[]
+include::{snippets}/post-get-all-info/response-fields.adoc[]
+
+=== 카테고리기반 게시물 목록 조회
+==== 요청
+include::{snippets}/post-get-categoryId-info/http-request.adoc[]
+include::{snippets}/post-get-categoryId-info/request-headers.adoc[]
+==== 응답
+include::{snippets}/post-get-categoryId-info/http-response.adoc[]
+include::{snippets}/post-get-categoryId-info/response-fields.adoc[]
+
+=== 게시물 삭제
+==== 요청
+include::{snippets}/post-delete/http-request.adoc[]
+include::{snippets}/post-delete/request-headers.adoc[]
+==== 응답
+include::{snippets}/post-delete/http-response.adoc[]
+include::{snippets}/post-delete/response-fields.adoc[]
+
+=== 게시물 검색
+==== 요청
+include::{snippets}/post-search/http-request.adoc[]
+include::{snippets}/post-search/request-headers.adoc[]
+==== 응답
+include::{snippets}/post-search/http-response.adoc[]
+include::{snippets}/post-search/response-fields.adoc[]

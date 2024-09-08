@@ -12,3 +12,6 @@ include::api/account.adoc[]
 
 == CategoryController 테스트
 include::api/category.adoc[]
+
+== PostController 테스트
+include::api/post.adoc[]
