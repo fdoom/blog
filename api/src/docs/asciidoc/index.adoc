@@ -15,3 +15,6 @@ include::api/category.adoc[]
 
 == PostController 테스트
 include::api/post.adoc[]
+
+== CommentController 테스트
+include::api/comment.adoc[]
