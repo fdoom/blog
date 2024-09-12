@@ -5,6 +5,7 @@ import cyou.noteit.api.global.base.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -26,7 +27,7 @@ public class Category extends BaseEntity {
     private String categoryName;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +35,6 @@ public class Category extends BaseEntity {
     private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Category> childCategories;
+    private List<Category> childCategories = new ArrayList<>();
 
 }
