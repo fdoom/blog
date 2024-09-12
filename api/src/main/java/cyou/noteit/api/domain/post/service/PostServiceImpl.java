@@ -1,7 +1,6 @@
 package cyou.noteit.api.domain.post.service;
 
 import cyou.noteit.api.domain.account.entity.Account;
-import cyou.noteit.api.domain.account.entity.role.Role;
 import cyou.noteit.api.domain.category.entity.Category;
 import cyou.noteit.api.domain.category.repository.CategoryRepository;
 import cyou.noteit.api.domain.post.dto.request.PostRequestDTO;
@@ -20,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -89,13 +89,27 @@ public class PostServiceImpl implements PostService {
     public ResponseEntity<List<PostResponseDTO>> getAllPostInfoByCategoryId(Long categoryId, Pageable pageable) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+
+        List<Post> posts = new ArrayList<>();
+        collectPostsByCategory(category, posts, pageable);
+
         return ResponseEntity.ok(
-                postRepository.findAllByShareStatusAndCategory(roleToShareStatus(), category.getCategoryId(), pageable)
-                        .stream()
+                posts.stream()
                         .map(post -> modelMapper.map(post, PostResponseDTO.class))
                         .toList()
         );
     }
+
+    private void collectPostsByCategory(Category category, List<Post> posts, Pageable pageable) {
+        posts.addAll(postRepository.findAllByShareStatusAndCategory(roleToShareStatus(), category.getCategoryId(), pageable));
+
+        if (!category.getChildCategories().isEmpty()) {
+            for (Category childCategory : category.getChildCategories()) {
+                collectPostsByCategory(childCategory, posts, pageable);
+            }
+        }
+    }
+
 
     @Override
     public ResponseEntity<PostResponseDTO> deletePostInfo(Long postId) {
