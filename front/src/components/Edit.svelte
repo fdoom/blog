@@ -310,7 +310,7 @@
 
     {#if activeButton === 'preview' || activeButton === ''}
         <div class="preview" bind:this={previewRef} style="width: {previewWidth};">
-            {@html marked(postInfo.postContent)}
+            {@html postInfo.postContent ? marked(postInfo.postContent.replace(/!\[(.*?)\]\((.*?)\)/g, '<div style="text-align: center"><img src="$2" alt="$1" style="max-width: 100%; height: auto;"/></div>')) : 'Post content not found.'}
         </div>
     {/if}
 </div>

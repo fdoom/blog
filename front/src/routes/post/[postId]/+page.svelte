@@ -180,7 +180,9 @@
                 <hr />
                 <div class="meta">
                     <p class="text-muted">작성일: {new Date(postInfo.createdAt).toLocaleString()}</p>
-                    <p class="text-muted">수정일: {new Date(postInfo.updatedAt).toLocaleString()}</p>
+                    {#if postInfo.createdAt != postInfo.updatedAt}
+                        <p class="text-muted">수정일: {new Date(postInfo.updatedAt).toLocaleString()}</p>
+                    {/if}
                     <span class="badge {postInfo.shareStatus === 'PUBLIC' ? 'badge-success' : (postInfo.shareStatus === 'PROTECTED' ? 'badge badge-warning' : 'badge-danger')}">
                         {postInfo.shareStatus}
                     </span>
