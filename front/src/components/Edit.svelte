@@ -178,7 +178,7 @@
 
             if (response.ok) {
                 alert('게시물이 성공적으로 등록되었습니다.');
-                goto('/');
+                window.history.back();
             } else if (response.status == 403) {
                 throw new Error('권한이 없습니다.');
             } else {
