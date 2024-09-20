@@ -109,7 +109,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{post.postTitle}</h5>
                                 <p class="card-text"><small class="text-muted">작성일: {new Date(post.createdAt).toLocaleString()}</small></p>
-                                <p class="content">{@html marked(post.postContent)}</p>
+                                <p class="content">{@html post.postContent ? marked(post.postContent.replace(/!\[(.*?)\]\((.*?)\)/g, '<div style="text-align: center"><img src="$2" alt="$1" style="max-width: 100%; height: auto;"/></div>')) : 'Post content not found.'}</p>
                                 <p class="share-status font-weight-bold text-primary">{post.shareStatus}</p>
                             </div>
                         </a>
