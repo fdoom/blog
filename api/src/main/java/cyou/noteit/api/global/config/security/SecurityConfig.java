@@ -52,22 +52,6 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .cors(corsConfigurer ->
-                        corsConfigurer.configurationSource(request -> {
-                            CorsConfiguration configuration = new CorsConfiguration();
-
-                            configuration.setAllowedOrigins(Collections.singletonList(ALLOWED_ORIGIN_PATTERNS));
-                            configuration.setAllowedMethods(Collections.singletonList("*"));
-                            configuration.setAllowCredentials(true);
-                            configuration.setAllowedHeaders(Collections.singletonList("*"));
-                            configuration.setMaxAge(3600L);
-                            configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                            return configuration;
-                        })
-                )
-
-
                 .addFilterAt(
                         LoginFilter.builder()
                                 .authenticationManager(authenticationManager(authenticationConfiguration))

@@ -5,4 +5,4 @@
     $: searchKeyword = $page.params.searchKeyword;
 </script>
 
-<PostList searchKeyword={searchKeyword}/>
+<PostList searchKeyword={encodeURIComponent(searchKeyword)}/>
