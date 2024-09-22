@@ -105,13 +105,6 @@
     const handleInput = (event) => {
         postInfo.postContent = event.target.value;
         syncScroll();
-        adjustTextareaHeight();
-    };
-
-    const adjustTextareaHeight = () => {
-        if (!textareaRef) return;
-        textareaRef.style.height = 'auto';
-        textareaRef.style.height = `${textareaRef.scrollHeight}px`;
     };
 
     const syncScroll = () => {
@@ -389,11 +382,9 @@
         padding: 20px;
         font-size: 16px;
         resize: none;
-        overflow: hidden;
         box-sizing: border-box;
         border-radius: 20px;
-        height: auto;
-        
+        height: 700px;
     }
 
     .preview {
@@ -403,6 +394,9 @@
         border-left: 1px solid #ccc;
         background-color: #f7f7f7;
         border-radius: 20px;
+        height: 100%;
+        overflow-y: auto;
+        max-height: 700px;
     }
 
     .controls {
@@ -460,6 +454,10 @@
 
         .buttons {
             margin-top: 10px; /* 섹션 간의 여백 추가 */
+        }
+
+        .preview, textarea {
+            height: 450px;
         }
     }
 </style>
