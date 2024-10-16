@@ -4,7 +4,6 @@
     import hljs from 'highlight.js';
     import 'highlight.js/styles/github.css';
     import { reissue } from '../util/reissue';
-    import { goto } from '$app/navigation';
     import { API_BASE_URL } from '../config';
 
     let postInfo = {
