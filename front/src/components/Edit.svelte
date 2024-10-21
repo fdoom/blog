@@ -227,8 +227,7 @@
                 method: 'POST',
                 credentials: "include",
                 headers: {
-                    Authorization: localStorage.getItem('accessToken'),
-                    Referer: window.location.origin
+                    Authorization: localStorage.getItem('accessToken')
                 },
                 body: formData
             });
@@ -239,8 +238,7 @@
                     method: 'POST',
                     credentials: "include",
                     headers: {
-                        Authorization: localStorage.getItem('accessToken'),
-                        Referer: window.location.origin
+                        Authorization: localStorage.getItem('accessToken')
                     },
                     body: formData
                 });
