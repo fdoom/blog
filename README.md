@@ -22,6 +22,7 @@
          
 ## 기술 선택 이유 
 - Docker:  환경 재현성 확보 및 배포 간소화
+- Jenkins: 테스트 및 배포 간소화
 - Spring Boot:  안정적인 API 구축 및 빠른 개발 속도 제공
 - Redis:  Refresh Token 관리
 - MySQL:  데이터 저장 및 관리
