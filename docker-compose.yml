@@ -5,7 +5,7 @@ services:
       - TZ=Asia/Seoul
     volumes:
       - ./front:/app
-      - /app/node_modules
+      - front:/app/node_modules
     ports:
       - "5173:5173"
     depends_on:
@@ -17,3 +17,6 @@ services:
       - TZ=Asia/Seoul
     ports:
       - "8080:8080"
+
+volumes:
+  front:
