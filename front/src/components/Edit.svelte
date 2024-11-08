@@ -5,6 +5,7 @@
     import 'highlight.js/styles/github.css';
     import { reissue } from '../util/reissue';
     import { API_BASE_URL } from '../config';
+    import { goto } from '$app/navigation';
 
     let postInfo = {
         postTitle: '',
@@ -170,7 +171,8 @@
 
             if (response.ok) {
                 alert('게시물이 성공적으로 등록되었습니다.');
-                window.history.back();
+                const data = await response.json();
+                goto(`/post/${data.postId}`);
             } else if (response.status == 403) {
                 throw new Error('권한이 없습니다.');
             } else {
