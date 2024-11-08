@@ -3,6 +3,9 @@ services:
     build: ./front
     environment:
       - TZ=Asia/Seoul
+    volumes:
+      - ./front:/app
+      - /app/node_modules
     ports:
       - "5173:5173"
     depends_on:
