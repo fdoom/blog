@@ -99,7 +99,7 @@
 
 <style>
     .container {
-        max-width: 600px;
+        max-width: 90%;
         margin: 20px auto;
         padding: 20px;
         border: 1px solid #ccc;

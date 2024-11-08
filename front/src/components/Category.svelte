@@ -105,13 +105,13 @@
     }
 </script>
 
-<ul style="list-style-type: none; padding-left: {depth * 20}px; margin: 0;">
+<ul style="list-style-type: none; padding-left: {depth + 10}px; margin: 0;">
     {#each categories as category}
         <li key={category.categoryId}>
             <div class="category-item">
                 <span>
                     {#if depth > 0}
-                        └─
+                        └
                     {/if}
                     <a href="/category/{category.categoryId}" style="text-decoration: none;">{category.categoryName}</a>
                 </span>
