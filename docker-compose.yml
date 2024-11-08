@@ -3,9 +3,11 @@ services:
     build: ./front
     environment:
       - TZ=Asia/Seoul
-    volumes:
-      - ./front:/app
-      - front:/app/node_modules
+
+    # 개발 및 디버깅 시 Svelte Hot Reload 적용
+    # volumes:
+    #   - ./front:/app
+    #   - /app/node_modules
     ports:
       - "5173:5173"
     depends_on:
@@ -17,6 +19,3 @@ services:
       - TZ=Asia/Seoul
     ports:
       - "8080:8080"
-
-volumes:
-  front:
