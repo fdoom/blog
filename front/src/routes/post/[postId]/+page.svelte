@@ -150,6 +150,8 @@
 
             if(response.ok) {
                 getComments();
+                alert('댓글 작성이 완료되었습니다.')
+                commentContent = '';
             } else {
                 const responseBody = await response.json();
                 alert(responseBody.message);
