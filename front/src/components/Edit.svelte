@@ -337,7 +337,11 @@
         <select bind:value={postInfo.categoryId}>
             <option value="" disabled>카테고리를 선택하세요</option>
             {#each categories as category}
-                <option value={category.categoryId}>{category.categoryName}</option>
+                {#if postInfo.categoryId === category.categoryId}
+                    <option value={category.categoryId} selected>{category.categoryName}</option>
+                {:else}
+                    <option value={category.categoryId}>{category.categoryName}</option>
+                {/if}
             {/each}
         </select>
     </div>
