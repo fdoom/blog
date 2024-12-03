@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseEntity<List<CategoryResponseDTO>> getCategoryInfoList() {
         return ResponseEntity.ok(
-                categoryRepository.findByParentCategoryIsNull()
+                categoryRepository.findByParentCategoryIsNullOrderByCategoryName()
                         .stream()
                         .map(this::mapCategoryToDTO)
                         .toList()
@@ -115,7 +115,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseEntity<List<CategoryResponseListDTO>> getCategoryAllInfo() {
         return ResponseEntity.ok(
-                categoryRepository.findAll()
+                categoryRepository.findAllByOrderByCategoryNameAsc()
                         .stream()
                         .map(category -> modelMapper.map(category, CategoryResponseListDTO.class))
                         .toList()

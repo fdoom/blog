@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Boolean existsByCategoryName(String categoryName);
 
-    List<Category> findByParentCategoryIsNull();
+    List<Category> findByParentCategoryIsNullOrderByCategoryName();
 
     Boolean existsByCategoryNameAndCategoryIdNot(String categoryName, Long categoryId);
 
@@ -32,4 +32,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     WHERE p.postId = :postId
     """)
     Optional<Category> findCategoryByPostId(Long postId);
+
+    List<Category> findAllByOrderByCategoryNameAsc();
 }
