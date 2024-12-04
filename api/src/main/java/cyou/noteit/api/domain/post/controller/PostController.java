@@ -34,7 +34,7 @@ public class PostController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<List<PostResponseDTO>> getAllPostInfo(@PageableDefault(sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<List<PostResponseDTO>> getAllPostInfo(@PageableDefault(sort = "created_at", direction = Sort.Direction.DESC, size = 12) Pageable pageable) {
         return postService.getAllPostInfo(pageable);
     }
 
