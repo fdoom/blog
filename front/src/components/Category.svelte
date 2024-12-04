@@ -156,6 +156,12 @@
         margin: 5px 0;
     }
 
+    .category-item:hover {
+        background-color: rgba(128, 128, 128, 0.321);
+        transition-duration: 0.5s;
+        border-radius: 10px;
+    }
+
     span {
         display: inline-block;
         width: 100%;
