@@ -177,7 +177,7 @@
             <div class="card-body">
                 <h1 class="card-title">{postInfo.postTitle}</h1>
                 <p class="card-text">
-                    {@html postInfo.postContent ? marked(postInfo.postContent.replace(/!\[(.*?)\]\((.*?)\)/g, '<div style="text-align: center"><img src="$2" alt="$1" style="max-width: 100%; height: auto;"/></div>')) : 'Post content not found.'}
+                    {@html postInfo.postContent ? marked(postInfo.postContent.replace(/!\[(.*?)\]\((.*?)\)/g, '<div class="image"style="text-align: center; margin: 20px"><img src="$2" alt="$1" style="max-width: 100%; height: auto;"/></div>')) : 'Post content not found.'}
                 </p>
                 <hr />
                 <div class="meta">
