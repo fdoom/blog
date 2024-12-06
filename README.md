@@ -7,7 +7,10 @@
 - Spring Boot 기반으로 REST API 제공, MySQL을 주 데이터베이스로 사용하며 Redis를 통해 Refresh Token 관리 
 
 **이미지 서버**
-- 별도 분리되어 이미지 저장 및 관리. API Key 인증 방식 적용, ROLE_ADMIN 계정만 이미지 업로드 가능 
+- 별도 분리되어 이미지 저장 및 관리. API Key 인증 방식 적용, ROLE_ADMIN 계정만 이미지 업로드 가능
+
+**상태 확인 서버리스**
+- Cloud Run functions와 Cloud Scheduler를 활용하여 서버 상태 확인 및 Discord 알림
 
 ## 구조
 **Docker 기반 구현**
@@ -26,6 +29,7 @@
 - Spring Boot:  안정적인 API 구축 및 빠른 개발 속도 제공
 - Redis:  Refresh Token 관리
 - MySQL:  데이터 저장 및 관리
+- Cloud Run functions와 Cloud Scheduler: 주기적으로 서버 상태 확인
 
 ## 링크
 - https://github.com/fdoom/blog : Blog 프로젝트 GitHub
