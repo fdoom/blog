@@ -35,3 +35,4 @@
 - https://github.com/fdoom/blog-image-db : 이미지 서버 프로젝트 GitHub
 - https://blog.noteit.cyou/post/1: 프로젝트 추가 설명
 - https://blog.noteit.cyou/post/89: Raspberry pi 5 8GB 모델 서버 성능
+- https://blog.noteit.cyou/post/91: SSL Server Test(SSL Labs) 결과
