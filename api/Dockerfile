@@ -1,5 +1,5 @@
 # 빌드 단계
-FROM gradle:jdk21 as builder
+FROM gradle:jdk21 AS builder
 
 WORKDIR /app
 
