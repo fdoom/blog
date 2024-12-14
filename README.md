@@ -9,8 +9,8 @@
 **이미지 서버**
 - 별도 분리되어 이미지 저장 및 관리. API Key 인증 방식 적용, ROLE_ADMIN 계정만 이미지 업로드 가능
 
-**상태 확인 서버리스**
-- Cloud Run functions와 Cloud Scheduler를 활용하여 서버 상태 확인 및 Discord 알림
+**상태 확인**
+- Spring Boot Scheduler를 활용하여 서버 상태 확인 및 Discord 알림
 
 ## 구조
 **Docker 기반 구현**
@@ -29,9 +29,10 @@
 - Spring Boot:  안정적인 API 구축 및 빠른 개발 속도 제공
 - Redis:  Refresh Token 관리
 - MySQL:  데이터 저장 및 관리
-- Cloud Run functions와 Cloud Scheduler: 주기적으로 서버 상태 확인
 
 ## 링크
 - https://github.com/fdoom/blog : Blog 프로젝트 GitHub
 - https://github.com/fdoom/blog-image-db : 이미지 서버 프로젝트 GitHub
 - https://blog.noteit.cyou/post/1: 프로젝트 추가 설명
+- https://blog.noteit.cyou/post/89: Raspberry pi 5 8GB 모델 서버 성능
+- https://blog.noteit.cyou/post/91: SSL Server Test(SSL Labs) 결과
